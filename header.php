@@ -29,17 +29,15 @@ $banner_url   = estatein_field( 'banner_link_url', estatein_page_url( 'propertie
 <?php if ( $banner_text ) : ?>
 	<div class="banner" id="announcement">
 		<p class="banner__text">
-			<?php estatein_icon( 'star-md', 16, '', 'banner__spark' ); ?>
-			<span><?php echo esc_html( $banner_text ); ?></span>
+			<?php /* Figma sets this as the sparkle emoji in the copy, not an icon. */ ?>
+			<span><?php echo '&#x2728;' . esc_html( $banner_text ); ?></span>
 			<?php if ( $banner_url && $banner_label ) : ?>
 				<a class="banner__link" href="<?php echo esc_url( $banner_url ); ?>"><?php echo esc_html( $banner_label ); ?></a>
 			<?php endif; ?>
 		</p>
 		<button class="banner__close" type="button" data-dismiss="#announcement">
 			<span class="screen-reader-text"><?php esc_html_e( 'Dismiss announcement', 'estatein' ); ?></span>
-			<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
-				<path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-			</svg>
+			<?php estatein_icon( 'banner-close', 24 ); ?>
 		</button>
 	</div>
 <?php endif; ?>

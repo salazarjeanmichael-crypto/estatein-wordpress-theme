@@ -112,7 +112,7 @@ $types = implode( ' ', array_map( function ( $name ) {
 }, array_keys( estatein_term_options( 'property_type' ) ) ) );
 
 $enquiry = '
-<div class="form-grid">
+<div class="form-grid form-grid--quarters">
 	<p class="form-field"><label>First Name [text* first_name placeholder "Enter First Name"]</label></p>
 	<p class="form-field"><label>Last Name [text last_name placeholder "Enter Last Name"]</label></p>
 	<p class="form-field"><label>Email [email* email placeholder "Enter your Email"]</label></p>
@@ -121,7 +121,17 @@ $enquiry = '
 	<p class="form-field"><label>Property Type [select pref_type first_as_label "Select Property Type" ' . $types . ']</label></p>
 	<p class="form-field"><label>No. of Bathrooms [select bathrooms first_as_label "Select no. of Bathrooms" "1+" "2+" "3+" "4+" "5+"]</label></p>
 	<p class="form-field"><label>No. of Bedrooms [select bedrooms first_as_label "Select no. of Bedrooms" "1+" "2+" "3+" "4+" "5+"]</label></p>
-	<p class="form-field form-field--full"><label>Budget [select budget first_as_label "Select Budget" "Under $500,000" "$500,000 - $750,000" "$750,000 - $1M" "$1M and above"]</label></p>
+	<p class="form-field form-field--half"><label>Budget [select budget first_as_label "Select Budget" "Under $500,000" "$500,000 - $750,000" "$750,000 - $1M" "$1M and above"]</label></p>
+	<div class="form-field form-field--half">
+		<span class="form-field__label">Preferred Contact Method</span>
+		<div class="contact-method">
+			<div class="contact-method__boxes">
+				<span class="contact-method__box contact-method__box--phone">[tel pref_phone placeholder "Enter Your Number"]</span>
+				<span class="contact-method__box contact-method__box--email">[email pref_email placeholder "Enter Your Email"]</span>
+			</div>
+			<div class="contact-method__radios">[radio contact_pref use_label_element default:1 "Phone" "Email"]</div>
+		</div>
+	</div>
 	<p class="form-field form-field--full"><label>Message [textarea* message rows:5 placeholder "Enter your Message here.."]</label></p>
 </div>
 <div class="enquiry__foot">

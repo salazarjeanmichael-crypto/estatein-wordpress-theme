@@ -297,6 +297,7 @@ select {
 	color: var(--purple-75);
 }
 
+/* A translucent white disc, per Figma - not a bare glyph. */
 .banner__close {
 	position: absolute;
 	top: 50%;
@@ -304,20 +305,16 @@ select {
 	transform: translateY(-50%);
 	display: grid;
 	place-items: center;
-	width: 32px;
-	height: 32px;
+	padding: 4px;
 	border: 0;
-	border-radius: 8px;
-	background: transparent;
-	color: var(--c-muted);
+	border-radius: 75px;
+	background: rgba(255, 255, 255, 0.1);
+	color: var(--c-text);
 	cursor: pointer;
-	transition:
-		background-color var(--ease),
-		color var(--ease);
+	transition: background-color var(--ease);
 }
 .banner__close:hover {
-	background: var(--grey-15);
-	color: var(--c-text);
+	background: rgba(255, 255, 255, 0.2);
 }
 .banner[hidden] {
 	display: none;
@@ -1449,6 +1446,8 @@ select {
 
 /* 17. Forms ================================================================ */
 
+/* The enquiry form runs four across, the contact form three. Both collapse to
+   two and then one, so a field never gets narrower than its placeholder. */
 .form-grid {
 	display: grid;
 	grid-template-columns: 1fr;
@@ -1457,39 +1456,165 @@ select {
 @media (min-width: 700px) {
 	.form-grid {
 		grid-template-columns: repeat(2, 1fr);
+		gap: 40px 30px;
+	}
+}
+@media (min-width: 1100px) {
+	.form-grid--quarters {
+		grid-template-columns: repeat(4, 1fr);
+		gap: 50px;
+	}
+	.form-grid--thirds {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 50px;
 	}
 }
 .form-field--full {
 	grid-column: 1 / -1;
 }
+@media (min-width: 1100px) {
+	.form-field--half {
+		grid-column: span 2;
+	}
+}
 
 .form-field {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 16px;
 }
+
 /* Column flex so the label reads the same whether it sits beside its control
    (theme markup) or wraps it, which is how CF7 associates the two. */
-.form-field label {
+.form-field label,
+.form-field__label {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
-	font-size: var(--fs-base);
+	gap: 16px;
+	font-size: var(--fs-lg);
+	font-weight: 600;
 	color: var(--c-text);
-	font-weight: 500;
 }
+
 .form-field input,
 .form-field select,
 .form-field textarea {
 	width: 100%;
-	padding: 18px 24px;
+	padding: 22px 20px;
 	background: var(--grey-10);
 	border: 1px solid var(--c-border);
-	border-radius: var(--r-card);
+	border-radius: 8px;
 	color: var(--c-text);
 	font-size: var(--fs-base);
 	transition: border-color var(--ease);
 }
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+	color: var(--grey-40);
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+	outline: none;
+	border-color: var(--c-accent);
+}
+.form-field textarea {
+	min-height: 180px;
+	resize: vertical;
+}
+
+/* Chevron as a data URI, so the control needs no extra request. */
+.form-field select {
+	appearance: none;
+	cursor: pointer;
+	padding-right: 52px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%23666666' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 20px center;
+}
+
+/* Preferred contact method: two fields side by side, each with its glyph and a
+   radio dot. The radio group renders as one node, so it is laid over the row
+   and each item pinned to the right of its own box. */
+.contact-method {
+	position: relative;
+}
+.contact-method__boxes {
+	display: flex;
+	gap: 16px;
+}
+.contact-method__box {
+	flex: 1 1 0;
+	min-width: 0;
+}
+.contact-method__box input {
+	padding-left: 56px;
+	padding-right: 48px;
+	background-repeat: no-repeat;
+	background-position: left 20px center;
+	background-size: 24px 24px;
+}
+.contact-method__box--phone input {
+	background-image: url("../img/icons/form-phone.svg");
+}
+.contact-method__box--email input {
+	background-image: url("../img/icons/form-email.svg");
+}
+.contact-method__radios {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	gap: 16px;
+	pointer-events: none;
+}
+.contact-method__radios .wpcf7-form-control,
+.contact-method__radios .wpcf7-form-control-wrap {
+	display: flex;
+	flex: 1 1 auto;
+	gap: 16px;
+}
+.contact-method__radios .wpcf7-list-item {
+	flex: 1 1 0;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	margin: 0;
+	padding-right: 20px;
+	pointer-events: auto;
+}
+.contact-method__radios .wpcf7-list-item-label {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+}
+.contact-method__radios input[type="radio"] {
+	width: 16px;
+	height: 16px;
+	margin: 0;
+	accent-color: var(--c-accent);
+	cursor: pointer;
+}
+
+.form-consent {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	color: var(--c-muted);
+}
+.form-consent input {
+	width: 20px;
+	height: 20px;
+	flex: none;
+	margin-top: 3px;
+	accent-color: var(--c-accent);
+}
+
+/* Column flex so the label reads the same whether it sits beside its control
+   (theme markup) or wraps it, which is how CF7 associates the two. */
+.form-field input,
+.form-field select,
 .form-field input::placeholder,
 .form-field textarea::placeholder {
 	color: var(--c-muted);
@@ -1500,15 +1625,6 @@ select {
 	outline: none;
 	border-color: var(--c-accent);
 }
-.form-field textarea {
-	min-height: 140px;
-	resize: vertical;
-}
-.form-field select {
-	appearance: none;
-	cursor: pointer;
-}
-
 .form-consent {
 	display: flex;
 	align-items: flex-start;
@@ -1911,11 +2027,6 @@ select {
 /* 22. Contact page ========================================================= */
 
 /* Three-up field grid, used by the shorter contact form. */
-@media (min-width: 900px) {
-	.form-grid--thirds {
-		grid-template-columns: repeat(3, 1fr);
-	}
-}
 
 .feature__socials {
 	display: flex;
@@ -2217,8 +2328,11 @@ select {
 	color: var(--c-muted);
 	margin: 0;
 }
+/* Fills the column so its bottom edge lines up with the card panel opposite. */
 .promo--stacked {
+	flex: 1 1 auto;
 	align-items: flex-start;
+	justify-content: center;
 	gap: 20px;
 }
 .promo--stacked h3 {
@@ -2230,7 +2344,7 @@ select {
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: 30px;
-	align-items: start;
+	align-items: stretch;
 }
 @media (min-width: 1100px) {
 	.invest-layout {
@@ -2858,12 +2972,16 @@ html.js:not(.no-reveal) .is-visible:not([data-revealed]) {
 	background-repeat: no-repeat;
 }
 
-/* Content sits above the art; without this the art paints over the text. */
-.banner > *,
+/* Content sits above the art. Scoped to the text, not every child: the close
+   button is absolutely positioned and must keep that. */
+.banner__text,
 .hero__grid,
 .cta__inner,
 .promo > * {
 	position: relative;
+	z-index: 1;
+}
+.banner__close {
 	z-index: 1;
 }
 
@@ -2911,10 +3029,11 @@ html.js:not(.no-reveal) .is-visible:not([data-revealed]) {
 	position: relative;
 	overflow: hidden;
 }
+/* Figma does not scale this layer: it drops the full 1924x1286 artwork in at
+   natural size, offset and clipped, which is why the lines read at all. */
 .promo::before {
 	inset: 0;
 	background-image: url("../img/bg/hero-lines.svg");
-	background-position: center;
-	background-size: cover;
-	opacity: 0.3;
+	background-position: calc(50% + 334px) calc(50% - 98px);
+	background-size: 1924px 1286px;
 }
