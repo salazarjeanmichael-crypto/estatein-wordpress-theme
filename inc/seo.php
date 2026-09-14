@@ -69,7 +69,12 @@ function estatein_meta_tags() {
 		printf( "\n<meta name=\"description\" content=\"%s\">", esc_attr( $description ) );
 	}
 
-	printf( "\n<link rel=\"canonical\" href=\"%s\">", esc_url( $url ) );
+	// WordPress core already emits rel=canonical on singular views via
+	// rel_canonical(). Only fill the gap on archives, search and the home page,
+	// so the page never carries two competing canonicals.
+	if ( ! is_singular() ) {
+		printf( "\n<link rel=\"canonical\" href=\"%s\">", esc_url( $url ) );
+	}
 
 	printf( "\n<meta property=\"og:site_name\" content=\"%s\">", esc_attr( get_bloginfo( 'name' ) ) );
 	printf( "\n<meta property=\"og:type\" content=\"%s\">", is_singular() ? 'article' : 'website' );
