@@ -1,0 +1,13 @@
+/*
+Theme Name:  Estatein
+Theme URI:   https://github.com/
+Author:      Jean Michael Salazar
+Description: Custom WordPress theme built from the Estatein real estate Figma template. Block-free, hand-written, fully responsive.
+Version:     1.0.0
+License:     GPL-2.0-or-later
+Text Domain: estatein
+Tags:        real-estate, dark, custom-theme
+*/
+
+/* Styles live in assets/css/main.css and are enqueued from functions.php.
+   This file carries the theme header only, so WordPress can register the theme. */
