@@ -2230,31 +2230,43 @@ select {
 }
 
 .step {
-	position: relative;
 	display: flex;
 	flex-direction: column;
-	gap: 12px;
-	padding: 40px;
-	background: var(--grey-08);
-	border: 1px solid var(--c-border);
-	border-radius: var(--r-card);
-	overflow: hidden;
+}
+
+/* Two blocks, as in Figma: the number sits on a bare left rule and the body is
+   a bordered panel whose top-left corner stays square, so the two read as one. */
+.step__number {
+	padding: 16px 20px;
+	border-left: 1px solid var(--c-accent);
+	font-size: var(--fs-lg);
+	font-weight: 500;
+	color: var(--c-text);
+}
+
+/* Three layers: the corner glow, an opaque base beneath it, then the border
+   gradient - which is how a gradient border survives a border-radius. */
+.step__body {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	padding: 50px;
+	border: 1px solid transparent;
+	border-radius: 0 var(--r-card) var(--r-card) var(--r-card);
+	background:
+		linear-gradient(135deg, rgba(112, 59, 247, 0.2), rgba(112, 59, 247, 0) 22%) padding-box,
+		linear-gradient(var(--grey-08), var(--grey-08)) padding-box,
+		linear-gradient(135deg, var(--c-accent), var(--c-border) 25%) border-box;
 }
 @media (max-width: 640px) {
-	.step {
-		padding: 24px;
+	.step__body {
+		padding: 30px;
 	}
 }
-.step__number {
-	font-size: var(--fs-stat);
-	font-weight: 700;
-	color: var(--grey-20);
-	line-height: 1;
+.step__body h3 {
+	font-size: clamp(1.25rem, 1.05rem + 0.9vw, 1.625rem);
 }
-.step h3 {
-	font-size: var(--fs-h3);
-}
-.step p {
+.step__body p {
 	color: var(--c-muted);
 }
 
@@ -2394,29 +2406,6 @@ select {
 	}
 }
 
-/* Steps get a purple accent bar down the left edge. */
-.step {
-	padding-left: 44px;
-}
-.step::before {
-	content: "";
-	position: absolute;
-	left: 0;
-	top: 0;
-	bottom: 0;
-	width: 4px;
-	background: var(--c-accent);
-}
-@media (max-width: 640px) {
-	.step {
-		padding-left: 28px;
-	}
-}
-.step__number {
-	font-size: var(--fs-base);
-	font-weight: 500;
-	color: var(--c-muted);
-}
 
 .team-grid {
 	display: grid;
@@ -2437,13 +2426,11 @@ select {
 .team-card {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	gap: 10px;
+	gap: 50px;
 	padding: 30px;
 	background: var(--grey-08);
 	border: 1px solid var(--c-border);
 	border-radius: var(--r-card);
-	text-align: center;
 	transition: border-color var(--ease);
 }
 .team-card:hover {
@@ -2452,51 +2439,89 @@ select {
 .team-card__media {
 	position: relative;
 	width: 100%;
-	margin-bottom: 20px;
 }
 .team-card__media img {
 	width: 100%;
-	border-radius: var(--r-btn);
-	aspect-ratio: 317 / 253;
+	height: 253px;
+	border-radius: var(--r-card);
 	object-fit: cover;
 }
+
+/* A pill, not a disc - 76x52 in the design, straddling the photo edge. */
 .team-card__social {
 	position: absolute;
 	left: 50%;
-	bottom: -20px;
+	bottom: -25px;
 	transform: translateX(-50%);
 	display: grid;
 	place-items: center;
-	width: 40px;
-	height: 40px;
+	padding: 14px 26px;
 	background: var(--c-accent);
-	border-radius: 50%;
+	border-radius: 43px;
 	transition: background-color var(--ease);
 }
 .team-card__social:hover {
 	background: #8254f8;
+}
+.team-card__social img {
+	width: 24px;
+	height: 24px;
+}
+.team-card__body {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+.team-card__text {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	text-align: center;
 }
 .team-card__name {
 	font-size: var(--fs-h3);
 }
 .team-card__role {
 	color: var(--c-muted);
-	font-size: var(--fs-sm);
+	font-size: var(--fs-base);
 }
+
+/* Full width, with the send button as a separate disc inside the pill. */
 .team-card__hello {
-	display: inline-flex;
+	display: flex;
 	align-items: center;
-	gap: 10px;
-	margin-top: 16px;
-	padding: 10px 16px;
+	gap: 20px;
+	width: 100%;
+	padding: 14px 14px 14px 24px;
 	background: var(--grey-10);
 	border: 1px solid var(--c-border);
-	border-radius: var(--r-btn);
-	font-size: var(--fs-sm);
+	border-radius: 100px;
+	font-size: var(--fs-base);
 	transition: border-color var(--ease);
+}
+.team-card__hello > span:first-child {
+	flex: 1 1 auto;
+	min-width: 0;
+	text-align: left;
 }
 .team-card__hello:hover {
 	border-color: var(--purple-75);
+}
+.team-card__send {
+	display: grid;
+	place-items: center;
+	flex: none;
+	padding: 10px;
+	background: var(--c-accent);
+	border-radius: 100px;
+	transition: background-color var(--ease);
+}
+.team-card__hello:hover .team-card__send {
+	background: #8254f8;
+}
+.team-card__send img {
+	width: 24px;
+	height: 24px;
 }
 
 .client-grid {
@@ -2513,15 +2538,17 @@ select {
 .client {
 	display: flex;
 	flex-direction: column;
-	gap: 24px;
-	padding: 40px;
+	gap: 40px;
+	padding: 50px;
 	background: var(--grey-08);
 	border: 1px solid var(--c-border);
 	border-radius: var(--r-card);
+	box-shadow: 0 0 0 8px #191919;
 }
 @media (max-width: 640px) {
 	.client {
-		padding: 24px;
+		padding: 30px;
+		gap: 30px;
 	}
 }
 .client__head {
@@ -2529,44 +2556,59 @@ select {
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
-	gap: 16px;
+	gap: 30px;
 }
 .client__since {
 	color: var(--c-muted);
-	font-size: var(--fs-sm);
+	font-size: var(--fs-base);
 }
 .client__head h3 {
-	font-size: var(--fs-h3);
+	font-size: clamp(1.375rem, 1.1rem + 1.25vw, 1.875rem);
 }
+
+/* Two equal columns split by a hairline, each labelled with its own glyph. */
 .client__meta {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 40px;
+	gap: 30px;
 	margin: 0;
 }
+.client__meta > div {
+	flex: 1 1 200px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+.client__meta > div + div {
+	padding-left: 30px;
+	border-left: 1px solid var(--c-border);
+}
 .client__meta dt {
+	display: flex;
+	align-items: center;
+	gap: 6px;
 	color: var(--c-muted);
-	font-size: var(--fs-sm);
-	margin-bottom: 4px;
+	font-size: var(--fs-base);
 }
 .client__meta dd {
 	margin: 0;
 	color: var(--c-text);
+	font-size: var(--fs-lg);
 }
 .client__quote {
 	margin: 0;
-	padding: 24px;
-	background: var(--grey-10);
+	padding: 30px;
 	border: 1px solid var(--c-border);
-	border-radius: var(--r-btn);
+	border-radius: var(--r-card);
 }
 .client__quote-label {
 	color: var(--c-muted);
-	font-size: var(--fs-sm);
-	margin-bottom: 8px;
+	font-size: var(--fs-base);
+	margin-bottom: 14px;
 }
 .client__quote p {
 	color: var(--c-text);
+	font-size: var(--fs-base);
 }
 
 /* 26. Entrance animations ================================================== */

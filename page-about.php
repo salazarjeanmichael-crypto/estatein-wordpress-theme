@@ -158,8 +158,10 @@ $team = new WP_Query( array(
 						);
 						?>
 					</p>
-					<h3><?php echo esc_html( $step['title'] ); ?></h3>
-					<p><?php echo esc_html( $step['text'] ); ?></p>
+					<div class="step__body">
+						<h3><?php echo esc_html( $step['title'] ); ?></h3>
+						<p><?php echo esc_html( $step['text'] ); ?></p>
+					</div>
 				</li>
 			<?php endforeach; ?>
 		</ol>
@@ -201,20 +203,24 @@ $team = new WP_Query( array(
 										);
 										?>
 									</span>
-									<?php estatein_icon( 'twitter', 20 ); ?>
+									<?php estatein_icon( 'team-twitter', 24 ); ?>
 								</a>
 							<?php endif; ?>
 						</div>
 
-						<h3 class="team-card__name"><?php the_title(); ?></h3>
-						<?php if ( $role ) : ?>
-							<p class="team-card__role"><?php echo esc_html( $role ); ?></p>
-						<?php endif; ?>
+						<div class="team-card__body">
+							<div class="team-card__text">
+								<h3 class="team-card__name"><?php the_title(); ?></h3>
+								<?php if ( $role ) : ?>
+									<p class="team-card__role"><?php echo esc_html( $role ); ?></p>
+								<?php endif; ?>
+							</div>
 
-						<a class="team-card__hello" href="<?php echo esc_url( $email ? 'mailto:' . $email : estatein_page_url( 'contact-us' ) . '#contact-form' ); ?>">
-							<span><?php esc_html_e( 'Say Hello', 'estatein' ); ?> &#128075;</span>
-							<?php estatein_icon( 'send', 20 ); ?>
-						</a>
+							<a class="team-card__hello" href="<?php echo esc_url( $email ? 'mailto:' . $email : estatein_page_url( 'contact-us' ) . '#contact-form' ); ?>">
+								<span><?php esc_html_e( 'Say Hello', 'estatein' ); ?> &#128075;</span>
+								<span class="team-card__send"><?php estatein_icon( 'team-send', 24 ); ?></span>
+							</a>
+						</div>
 					</li>
 					<?php
 				endwhile;
@@ -256,17 +262,17 @@ $team = new WP_Query( array(
 
 					<dl class="client__meta">
 						<div>
-							<dt><?php esc_html_e( 'Domain', 'estatein' ); ?></dt>
+							<dt><?php estatein_icon( 'client-domain', 24 ); ?><span><?php esc_html_e( 'Domain', 'estatein' ); ?></span></dt>
 							<dd><?php echo esc_html( $client['domain'] ); ?></dd>
 						</div>
 						<div>
-							<dt><?php esc_html_e( 'Category', 'estatein' ); ?></dt>
+							<dt><?php estatein_icon( 'client-category', 24 ); ?><span><?php esc_html_e( 'Category', 'estatein' ); ?></span></dt>
 							<dd><?php echo esc_html( $client['category'] ); ?></dd>
 						</div>
 					</dl>
 
 					<blockquote class="client__quote">
-						<p class="client__quote-label"><?php esc_html_e( 'What They Said', 'estatein' ); ?> &#128525;</p>
+						<p class="client__quote-label"><?php esc_html_e( 'What They Said', 'estatein' ); ?> &#129303;</p>
 						<p><?php echo esc_html( $client['quote'] ); ?></p>
 					</blockquote>
 				</article>
