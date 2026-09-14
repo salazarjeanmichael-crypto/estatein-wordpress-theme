@@ -30,6 +30,41 @@ function estatein_form_state() {
 }
 
 /**
+ * Stop Contact Form 7 reformatting the form markup.
+ *
+ * The three forms are authored in tools/create-forms.php with their own block
+ * elements; autop wraps those in <p> and breaks the flex rows they rely on.
+ */
+add_filter( 'wpcf7_autop_or_not', '__return_false' );
+
+/**
+ * Render a Contact Form 7 form, if one has been provisioned for this slot.
+ *
+ * Returns false rather than printing when CF7 is absent or the form was
+ * deleted, so the caller can fall back to the theme's own markup.
+ *
+ * @param string $option_key Option holding the form ID, set by tools/create-forms.php.
+ * @return bool Whether a form was printed.
+ */
+function estatein_render_cf7( $option_key ) {
+	if ( ! class_exists( 'WPCF7_ContactForm' ) ) {
+		return false;
+	}
+
+	$id   = (int) get_option( $option_key );
+	$form = $id ? WPCF7_ContactForm::get_instance( $id ) : null;
+
+	if ( ! $form ) {
+		return false;
+	}
+
+	// Addressed by hash, not post ID: CF7 deprecated the numeric form.
+	echo do_shortcode( sprintf( '[contact-form-7 id="%s"]', esc_attr( $form->hash() ) ) );
+
+	return true;
+}
+
+/**
  * Error message for one field, if any.
  *
  * @param string $field Field name.

@@ -43,8 +43,15 @@ function estatein_meta_fields() {
 
 /**
  * Register the meta boxes.
+ *
+ * Skipped when ACF is active, which registers the same field names in
+ * acf-fields.php; showing both would give editors two sets of the same inputs.
  */
 function estatein_add_meta_boxes() {
+	if ( estatein_acf_active() ) {
+		return;
+	}
+
 	foreach ( estatein_meta_fields() as $post_type => $fields ) {
 		add_meta_box(
 			'estatein-details',

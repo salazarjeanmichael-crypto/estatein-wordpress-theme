@@ -72,6 +72,11 @@ $socials = array(
 		<div class="site-footer__brand">
 			<?php estatein_brand(); ?>
 
+			<?php
+			// CF7 owns the newsletter when installed; the markup below is the
+			// fallback so the footer still collects addresses without it.
+			if ( ! estatein_render_cf7( 'estatein_form_newsletter' ) ) :
+				?>
 			<form class="footer-subscribe" method="post" action="<?php echo esc_url( home_url( '/' ) ); ?>">
 				<?php estatein_icon( 'mail', 24, '', 'footer-subscribe__icon' ); ?>
 				<label class="screen-reader-text" for="subscribe-email">
@@ -92,6 +97,7 @@ $socials = array(
 				<p class="form-note form-note--ok" role="status">
 					<?php esc_html_e( 'Thanks — you are on the list.', 'estatein' ); ?>
 				</p>
+			<?php endif; ?>
 			<?php endif; ?>
 		</div>
 

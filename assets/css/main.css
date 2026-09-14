@@ -782,11 +782,13 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
 }
 .footer-subscribe button:hover { color: var(--purple-75); transform: translateX(2px); }
 
+/* 120px floor, not 140: at ~1400px the brand column leaves just enough room
+   for five tracks, and a wider floor drops Contact Us onto its own row. */
 .footer-cols {
   flex: 1 1 520px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 40px 24px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 40px 20px;
 }
 .footer-col h2 { font-size: var(--fs-lg); font-weight: 500; color: var(--c-muted); margin-bottom: 30px; }
 .footer-col ul { display: flex; flex-direction: column; gap: 20px; }
@@ -828,7 +830,16 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
 .form-field--full { grid-column: 1 / -1; }
 
 .form-field { display: flex; flex-direction: column; gap: 10px; }
-.form-field label { font-size: var(--fs-base); color: var(--c-text); font-weight: 500; }
+/* Column flex so the label reads the same whether it sits beside its control
+   (theme markup) or wraps it, which is how CF7 associates the two. */
+.form-field label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: var(--fs-base);
+  color: var(--c-text);
+  font-weight: 500;
+}
 .form-field input,
 .form-field select,
 .form-field textarea {
@@ -1431,3 +1442,58 @@ html.js:not(.no-reveal) .is-visible:not([data-revealed]) {
 .hero__actions { --reveal-delay: 90ms; }
 .hero__media   { --reveal-delay: 120ms; }
 .hero__stats   { --reveal-delay: 180ms; }
+
+
+/* 27. Contact Form 7 ======================================================= */
+
+/* CF7 wraps every control in a span, which would otherwise sit inline and
+   collapse the field grid. The controls themselves inherit section 17. */
+.wpcf7-form-control-wrap { display: block; width: 100%; }
+.wpcf7-form .form-grid { margin: 0; }
+
+.wpcf7-not-valid-tip { display: block; margin-top: 6px; font-size: var(--fs-sm); font-weight: 400; color: #FF8A8A; }
+.wpcf7-not-valid { border-color: #FF5C5C !important; }
+
+/* CF7 hides this until it has something to say, so it is styled as a notice
+   and left to the plugin to reveal. */
+.wpcf7-response-output {
+  margin: 20px 0 0 !important;
+  padding: 18px 24px !important;
+  border: 1px solid var(--c-border) !important;
+  border-radius: var(--r-card);
+  font-size: var(--fs-base);
+  color: var(--c-text);
+}
+.wpcf7-form.sent .wpcf7-response-output          { border-color: var(--c-accent) !important; background: rgba(112, 59, 247, .12); }
+.wpcf7-form.invalid .wpcf7-response-output,
+.wpcf7-form.failed .wpcf7-response-output        { border-color: #FF5C5C !important; background: rgba(255, 92, 92, .1); color: #FFB4B4; }
+
+/* Consent checkbox: CF7 nests input and text inside the label. */
+.form-consent .wpcf7-acceptance .wpcf7-list-item { margin: 0; }
+.form-consent .wpcf7-list-item label { flex-direction: row; align-items: flex-start; gap: 12px; font-weight: 400; color: var(--c-muted); }
+.form-consent .wpcf7-list-item input[type="checkbox"] { width: 20px; height: 20px; flex: none; margin-top: 3px; accent-color: var(--c-accent); }
+
+.wpcf7-spinner { margin-left: 12px; }
+
+/* Newsletter: an <input type="submit"> cannot hold an icon element, so the
+   glyph is a background and the value text is hidden but still the a11y name. */
+.footer-subscribe .wpcf7-form-control-wrap { flex: 1 1 auto; min-width: 0; width: auto; }
+.footer-subscribe input[type="email"] {
+  padding-left: 34px;
+  background: transparent url("../img/icons/mail.svg") left center / 24px 24px no-repeat;
+}
+/* Scoped through the parent so it outranks `.footer-subscribe input`, which
+   would otherwise restore the font size and clip the value text into view. */
+.footer-subscribe input.footer-subscribe__send {
+  flex: none;
+  width: 30px; height: 30px;
+  padding: 0;
+  border: 0; border-radius: 6px;
+  font-size: 0; color: transparent;
+  cursor: pointer;
+  background: transparent url("../img/icons/send.svg") center / 22px 22px no-repeat;
+  transition: transform var(--ease), opacity var(--ease);
+}
+.footer-subscribe input.footer-subscribe__send:hover { transform: translateX(2px); opacity: .8; }
+.site-footer__brand .wpcf7-response-output { max-width: 423px; }
+.site-footer__brand .wpcf7-spinner { display: none; }

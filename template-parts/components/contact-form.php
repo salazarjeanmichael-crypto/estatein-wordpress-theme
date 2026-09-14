@@ -50,7 +50,17 @@ $fields = array(
 ?>
 <div class="enquiry" id="contact-form">
 
-	<?php estatein_form_notice(); ?>
+	<?php
+	// Contact Form 7 owns this form when it is installed, so the client can
+	// edit fields and mail routing without a deploy. The markup below is the
+	// fallback that keeps the page working if the plugin is removed.
+	if ( estatein_render_cf7( 'estatein_form_contact' ) ) {
+		echo '</div>';
+		return;
+	}
+
+	estatein_form_notice();
+	?>
 
 	<form method="post" action="<?php echo esc_url( get_permalink() ); ?>#contact-form" novalidate>
 		<?php
