@@ -79,22 +79,33 @@ function estatein_assets() {
 
 	wp_enqueue_style( 'estatein-style', get_stylesheet_uri(), array(), ESTATEIN_VERSION );
 
-	wp_enqueue_style(
-		'estatein-main',
-		ESTATEIN_URI . '/assets/css/main.css',
-		array( 'estatein-style' ),
-		estatein_asset_version( '/assets/css/main.css' )
-	);
+	$css = estatein_asset_path( '/assets/css/main', 'css' );
+	$js  = estatein_asset_path( '/assets/js/main', 'js' );
 
-	wp_enqueue_script(
-		'estatein-main',
-		ESTATEIN_URI . '/assets/js/main.js',
-		array(),
-		estatein_asset_version( '/assets/js/main.js' ),
-		true
-	);
+	wp_enqueue_style( 'estatein-main', ESTATEIN_URI . $css, array( 'estatein-style' ), estatein_asset_version( $css ) );
+	wp_enqueue_script( 'estatein-main', ESTATEIN_URI . $js, array(), estatein_asset_version( $js ), true );
 }
 add_action( 'wp_enqueue_scripts', 'estatein_assets' );
+
+/**
+ * Pick the minified asset, falling back to the source.
+ *
+ * SCRIPT_DEBUG serves the readable file so the theme stays debuggable, and the
+ * fallback means a missing .min never takes the site down with it.
+ *
+ * @param string $base Path without extension, relative to the theme.
+ * @param string $ext  File extension.
+ * @return string
+ */
+function estatein_asset_path( $base, $ext ) {
+	$min = $base . '.min.' . $ext;
+
+	if ( ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ) && file_exists( ESTATEIN_DIR . $min ) ) {
+		return $min;
+	}
+
+	return $base . '.' . $ext;
+}
 
 /**
  * File modification time as a cache-busting version string.
