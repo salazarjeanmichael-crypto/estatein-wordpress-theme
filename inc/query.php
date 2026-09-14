@@ -23,6 +23,9 @@ function estatein_active_filters() {
 		'type'     => isset( $_GET['type'] ) ? sanitize_title( wp_unslash( $_GET['type'] ) ) : '',
 		'price'    => isset( $_GET['price'] ) ? sanitize_text_field( wp_unslash( $_GET['price'] ) ) : '',
 		'beds'     => isset( $_GET['beds'] ) ? absint( $_GET['beds'] ) : 0,
+		// Not "year": that is a reserved WordPress query var for date archives,
+		// and passing it turns the page into a 404.
+		'built'    => isset( $_GET['built'] ) ? absint( $_GET['built'] ) : 0,
 	);
 	// phpcs:enable
 }
@@ -111,6 +114,16 @@ function estatein_property_query( $per_page = 6 ) {
 		$meta_query[] = array(
 			'key'     => '_estatein_bedrooms',
 			'value'   => $filters['beds'],
+			'type'    => 'NUMERIC',
+			'compare' => '>=',
+		);
+	}
+
+	// Treated as "this year or newer", which is how a buyer reads a build year.
+	if ( $filters['built'] ) {
+		$meta_query[] = array(
+			'key'     => '_estatein_year',
+			'value'   => $filters['built'],
 			'type'    => 'NUMERIC',
 			'compare' => '>=',
 		);

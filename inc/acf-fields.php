@@ -91,6 +91,11 @@ function estatein_acf_fields() {
 			estatein_acf_field( 'address', __( 'Address', 'estatein' ), 'text', array(
 				'wrapper' => array( 'width' => '34' ),
 			) ),
+			estatein_acf_field( 'year', __( 'Build year', 'estatein' ), 'number', array(
+				'instructions' => __( 'Four digits, e.g. 2019.', 'estatein' ),
+				'min'          => 1800,
+				'wrapper'      => array( 'width' => '33' ),
+			) ),
 		),
 	) );
 

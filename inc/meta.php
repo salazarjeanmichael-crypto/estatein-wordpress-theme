@@ -27,6 +27,7 @@ function estatein_meta_fields() {
 			'style'     => array( 'label' => __( 'Style', 'estatein' ),        'type' => 'text',   'hint' => __( 'Shown on the third tag, e.g. Villa', 'estatein' ) ),
 			'area'      => array( 'label' => __( 'Floor area', 'estatein' ),   'type' => 'text',   'hint' => __( 'e.g. 2,500 sq ft', 'estatein' ) ),
 			'address'   => array( 'label' => __( 'Address', 'estatein' ),      'type' => 'text' ),
+			'year'      => array( 'label' => __( 'Build year', 'estatein' ),   'type' => 'number', 'hint' => __( 'e.g. 2019', 'estatein' ) ),
 		),
 		'testimonial' => array(
 			'rating'   => array( 'label' => __( 'Rating (1-5)', 'estatein' ), 'type' => 'number' ),

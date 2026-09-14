@@ -1640,74 +1640,6 @@ select {
 
 /* 19. Property search and filters ========================================== */
 
-.property-search__bar {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	padding: 10px;
-	background: var(--grey-10);
-	border: 1px solid var(--c-border);
-	border-radius: var(--r-card);
-}
-.property-search__bar input {
-	flex: 1 1 auto;
-	min-width: 0;
-	padding: 14px 18px;
-	background: none;
-	border: 0;
-	color: var(--c-text);
-	font-size: var(--fs-base);
-}
-.property-search__bar input::placeholder {
-	color: var(--c-muted);
-}
-.property-search__bar input:focus {
-	outline: none;
-}
-.property-search__bar .btn {
-	flex: none;
-	padding-block: 14px;
-}
-@media (max-width: 560px) {
-	.property-search__bar {
-		flex-wrap: wrap;
-	}
-	.property-search__bar .btn {
-		width: 100%;
-	}
-}
-
-.property-search__filters {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-	gap: 20px;
-	margin-top: 20px;
-}
-.filter {
-	margin: 0;
-}
-.filter select {
-	width: 100%;
-	padding: 16px 44px 16px 20px;
-	background: var(--grey-08);
-	border: 1px solid var(--c-border);
-	border-radius: var(--r-btn);
-	color: var(--c-text);
-	font-size: var(--fs-base);
-	cursor: pointer;
-	appearance: none;
-	/* Chevron drawn as a data URI so the control needs no extra request. */
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%23999999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-	background-repeat: no-repeat;
-	background-position: right 18px center;
-}
-.filter select:focus {
-	outline: none;
-	border-color: var(--c-accent);
-}
-.filter__reset {
-	align-self: center;
-}
 
 .results-count {
 	margin-bottom: 24px;
@@ -1729,6 +1661,126 @@ select {
 }
 .empty-state p {
 	color: var(--c-muted);
+}
+
+/* Search bar: full-bleed band, with the field inset further than the filter
+   row beneath it and squared off at the bottom so the two read as one unit. */
+.property-search__bar-wrap {
+	padding-inline: clamp(0px, 9.25vw, 148px);
+}
+.property-search__bar {
+	display: flex;
+	align-items: center;
+	gap: 50px;
+	padding: 20px 20px 20px 24px;
+	background: var(--grey-08);
+	border: 1px solid var(--c-border);
+	border-radius: var(--r-card) var(--r-card) 0 0;
+	box-shadow: 0 0 0 10px #191919;
+}
+.property-search__bar input {
+	flex: 1 1 auto;
+	min-width: 0;
+	background: none;
+	border: 0;
+	color: var(--c-text);
+	font-size: clamp(1.125rem, 0.95rem + 0.78vw, 1.5rem);
+}
+.property-search__bar input::placeholder {
+	color: var(--grey-40);
+}
+.property-search__bar input:focus {
+	outline: none;
+}
+.property-search__bar .btn {
+	flex: none;
+	gap: 8px;
+}
+
+/* The filter row sits in its own lighter tray, 10px around the controls. */
+.property-search__filters {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+	gap: 20px;
+	margin-top: 10px;
+	padding: 10px;
+	background: var(--grey-10);
+	border-radius: var(--r-card);
+}
+
+/* A label wrapper, so a click anywhere in the box opens the select. */
+.filter {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 20px;
+	background: var(--grey-08);
+	border: 1px solid var(--c-border);
+	border-radius: var(--r-card);
+	cursor: pointer;
+}
+.filter__icon {
+	display: grid;
+	place-items: center;
+	flex: none;
+}
+.filter__icon img {
+	width: 24px;
+	height: 24px;
+}
+.filter__rule {
+	flex: none;
+	width: 1px;
+	align-self: stretch;
+	background: var(--c-border);
+}
+.filter select {
+	flex: 1 1 auto;
+	min-width: 0;
+	background: none;
+	border: 0;
+	color: var(--c-muted);
+	font-size: var(--fs-base);
+	cursor: pointer;
+	appearance: none;
+}
+.filter select:focus {
+	outline: none;
+	color: var(--c-text);
+}
+.filter__chevron {
+	display: grid;
+	place-items: center;
+	flex: none;
+	padding: 4px;
+	background: var(--grey-10);
+	border-radius: 46px;
+}
+.filter__chevron img {
+	width: 24px;
+	height: 24px;
+}
+.filter__reset {
+	align-self: center;
+}
+
+/* Page heroes carry the same line artwork as the homepage hero. */
+.page-hero {
+	position: relative;
+	overflow: hidden;
+}
+.page-hero::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	background: url("../img/bg/hero-lines.svg") center / cover no-repeat;
+	opacity: 0.35;
+}
+.page-hero__inner {
+	position: relative;
+	z-index: 1;
 }
 
 /* 20. Enquiry form ========================================================= */

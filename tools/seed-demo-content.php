@@ -143,7 +143,7 @@ $properties = array(
 		'excerpt' => 'A stunning 4-bedroom, 3-bathroom villa in a peaceful suburban neighborhood, moments from the water.',
 		'content' => "Wake up to the sound of the sea. This four-bedroom villa sits on a quiet coastal street, with floor-to-ceiling glazing across the living space and a private terrace that catches the afternoon sun.\n\nThe kitchen is fully fitted, the primary suite has a walk-in wardrobe and an ensuite, and there is off-street parking for two cars. The beach is a six-minute walk.",
 		'image'   => 'property-1.jpg',
-		'meta'    => array( 'price' => '550000', 'bedrooms' => '4', 'bathrooms' => '3', 'style' => 'Villa', 'area' => '2,500 sq ft', 'address' => 'Malibu, California' ),
+		'meta'    => array( 'price' => '550000', 'bedrooms' => '4', 'bathrooms' => '3', 'style' => 'Villa', 'area' => '2,500 sq ft', 'address' => 'Malibu, California', 'year' => '2021' ),
 		'terms'   => array( 'property_type' => array( 'Villa' ), 'property_location' => array( 'California' ) ),
 	),
 	array(
@@ -154,7 +154,7 @@ $properties = array(
 		'excerpt' => 'A chic and fully-furnished 2-bedroom apartment with panoramic city views.',
 		'content' => "A two-bedroom apartment on the twenty-second floor, sold fully furnished. Floor-to-ceiling windows run the length of the living room and both bedrooms, and the building has a residents' gym, roof terrace and 24-hour concierge.\n\nTransport links are on the doorstep, with two underground lines and the business district within fifteen minutes.",
 		'image'   => 'property-2.jpg',
-		'meta'    => array( 'price' => '550000', 'bedrooms' => '2', 'bathrooms' => '2', 'style' => 'Villa', 'area' => '1,200 sq ft', 'address' => 'Downtown, Chicago' ),
+		'meta'    => array( 'price' => '550000', 'bedrooms' => '2', 'bathrooms' => '2', 'style' => 'Villa', 'area' => '1,200 sq ft', 'address' => 'Downtown, Chicago', 'year' => '2019' ),
 		'terms'   => array( 'property_type' => array( 'Apartment' ), 'property_location' => array( 'Illinois' ) ),
 	),
 	array(
@@ -165,7 +165,7 @@ $properties = array(
 		'excerpt' => 'An elegant 3-bedroom, 2.5-bathroom townhouse in a gated community.',
 		'content' => "A three-bedroom townhouse in a gated development, arranged over three floors with a private garden to the rear. Original brickwork and exposed beams sit alongside a recently rebuilt kitchen and bathrooms.\n\nThe development has its own security gate, visitor parking and a shared green.",
 		'image'   => 'property-3.jpg',
-		'meta'    => array( 'price' => '550000', 'bedrooms' => '3', 'bathrooms' => '3', 'style' => 'Villa', 'area' => '1,850 sq ft', 'address' => 'Aspen, Colorado' ),
+		'meta'    => array( 'price' => '550000', 'bedrooms' => '3', 'bathrooms' => '3', 'style' => 'Villa', 'area' => '1,850 sq ft', 'address' => 'Aspen, Colorado', 'year' => '2016' ),
 		'terms'   => array( 'property_type' => array( 'Townhouse' ), 'property_location' => array( 'Colorado' ) ),
 	),
 	array(
@@ -176,7 +176,7 @@ $properties = array(
 		'excerpt' => 'A bright 3-bedroom family home with a mature garden and a converted loft.',
 		'content' => "A three-bedroom family home on a quiet residential road. The loft has been converted into a fourth room currently used as a study, and the garden is mature and fully enclosed.\n\nTwo primary schools and a park are within walking distance.",
 		'image'   => 'property-1.jpg',
-		'meta'    => array( 'price' => '625000', 'bedrooms' => '3', 'bathrooms' => '2', 'style' => 'House', 'area' => '1,980 sq ft', 'address' => 'Portland, Oregon' ),
+		'meta'    => array( 'price' => '625000', 'bedrooms' => '3', 'bathrooms' => '2', 'style' => 'House', 'area' => '1,980 sq ft', 'address' => 'Portland, Oregon', 'year' => '2012' ),
 		'terms'   => array( 'property_type' => array( 'House' ), 'property_location' => array( 'Oregon' ) ),
 	),
 	array(
@@ -187,7 +187,7 @@ $properties = array(
 		'excerpt' => 'A 4-bedroom penthouse with a wraparound terrace and private lift access.',
 		'content' => "A penthouse occupying the full top floor, with a wraparound terrace on three sides and a private lift opening directly into the hallway.\n\nFour bedrooms, three of them ensuite, and a separate staff or guest room off the kitchen.",
 		'image'   => 'property-2.jpg',
-		'meta'    => array( 'price' => '1250000', 'bedrooms' => '4', 'bathrooms' => '4', 'style' => 'Penthouse', 'area' => '3,400 sq ft', 'address' => 'Manhattan, New York' ),
+		'meta'    => array( 'price' => '1250000', 'bedrooms' => '4', 'bathrooms' => '4', 'style' => 'Penthouse', 'area' => '3,400 sq ft', 'address' => 'Manhattan, New York', 'year' => '2022' ),
 		'terms'   => array( 'property_type' => array( 'Apartment' ), 'property_location' => array( 'New York' ) ),
 	),
 	array(
@@ -198,7 +198,7 @@ $properties = array(
 		'excerpt' => 'A 2-bedroom architect-designed cabin with direct lake frontage.',
 		'content' => "An architect-designed cabin with thirty metres of private lake frontage and a timber deck that runs the width of the building.\n\nTwo bedrooms, a double-height living space with a wood burner, and a boathouse included in the sale.",
 		'image'   => 'property-3.jpg',
-		'meta'    => array( 'price' => '780000', 'bedrooms' => '2', 'bathrooms' => '2', 'style' => 'Cabin', 'area' => '1,450 sq ft', 'address' => 'Lake Tahoe, Nevada' ),
+		'meta'    => array( 'price' => '780000', 'bedrooms' => '2', 'bathrooms' => '2', 'style' => 'Cabin', 'area' => '1,450 sq ft', 'address' => 'Lake Tahoe, Nevada', 'year' => '2018' ),
 		'terms'   => array( 'property_type' => array( 'House' ), 'property_location' => array( 'Nevada' ) ),
 	),
 );

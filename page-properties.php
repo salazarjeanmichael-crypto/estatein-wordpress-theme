@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
-$query = estatein_property_query( 6 );
+$query = estatein_property_query( 9 );
 ?>
 
 <section class="page-hero">
@@ -47,26 +47,38 @@ $query = estatein_property_query( 6 );
 
 		<?php if ( $query->have_posts() ) : ?>
 
-			<p class="results-count">
-				<?php
-				printf(
-					/* translators: %s: number of matching properties */
-					esc_html( _n( '%s property found', '%s properties found', (int) $query->found_posts, 'estatein' ) ),
-					'<b>' . esc_html( number_format_i18n( $query->found_posts ) ) . '</b>'
-				);
-				?>
-			</p>
+			<?php if ( estatein_has_active_filters() ) : ?>
+				<p class="results-count">
+					<?php
+					printf(
+						/* translators: %s: number of matching properties */
+						esc_html( _n( '%s property found', '%s properties found', (int) $query->found_posts, 'estatein' ) ),
+						'<b>' . esc_html( number_format_i18n( $query->found_posts ) ) . '</b>'
+					);
+					?>
+				</p>
+			<?php endif; ?>
 
-			<div class="property-grid">
+			<?php /* A slider here, as in the design; the archive keeps real pagination. */ ?>
+			<div class="carousel" data-carousel>
+				<div class="carousel__viewport">
+					<div class="carousel__track" data-carousel-track>
+						<?php
+						while ( $query->have_posts() ) :
+							$query->the_post();
+							get_template_part( 'template-parts/components/property-card' );
+						endwhile;
+						?>
+					</div>
+				</div>
+
 				<?php
-				while ( $query->have_posts() ) :
-					$query->the_post();
-					get_template_part( 'template-parts/components/property-card' );
-				endwhile;
+				get_template_part( 'template-parts/components/carousel-nav', null, array(
+					'total' => (int) $query->found_posts,
+					'label' => __( 'properties', 'estatein' ),
+				) );
 				?>
 			</div>
-
-			<?php estatein_pagination( $query ); ?>
 
 		<?php else : ?>
 
