@@ -2,10 +2,8 @@
 /**
  * Template helpers.
  *
- * These keep the templates declarative: a template says *what* to render,
- * the helper knows *how*. They also give every piece of content an ACF-aware
- * lookup with a hard-coded fallback, so the theme renders correctly whether or
- * not ACF is installed.
+ * Templates say what to render; these know how. Content reads are ACF-aware
+ * with hard-coded fallbacks, so the theme is correct with or without ACF.
  *
  * @package Estatein
  */

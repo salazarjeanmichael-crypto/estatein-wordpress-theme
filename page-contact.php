@@ -13,7 +13,8 @@ $email   = estatein_field( 'contact_email', 'info@estatein.com', 'option' );
 $phone   = estatein_field( 'contact_phone', '+1 (123) 456-7890', 'option' );
 $address = estatein_field( 'contact_address', '123 Estatein Plaza, City Center, Metropolis', 'option' );
 
-// The four contact routes from the design, reusing the feature-strip styling.
+// Reuses the homepage feature-strip classes: the design treats these as the
+// same object, so sharing styles stops the two pages drifting apart.
 $methods = array(
 	array(
 		'icon'  => 'contact-mail',
@@ -87,7 +88,13 @@ $offices = array(
 				</li>
 			<?php endforeach; ?>
 
-			<?php /* The socials card holds three links, so it is not a single anchor. */ ?>
+			<?php
+			/*
+			 * Not an anchor like the three above: this card holds three
+			 * separate destinations, and a link inside a link is invalid
+			 * markup that browsers recover from unpredictably.
+			 */
+			?>
 			<li class="feature">
 				<div class="feature__link">
 					<span class="feature__icon">

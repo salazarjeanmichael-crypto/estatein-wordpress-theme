@@ -2,9 +2,8 @@
 /**
  * Site footer: brand, newsletter, link columns, legal bar and socials.
  *
- * Each link column is a real WordPress menu location, so the client can edit
- * them from Appearance > Menus. The fallback arrays reproduce the Figma
- * design, so the footer is never empty on a fresh install.
+ * Each column is a real menu location so the client can edit it; the fallback
+ * arrays reproduce the design, so the footer is never empty on a fresh install.
  *
  * @package Estatein
  */

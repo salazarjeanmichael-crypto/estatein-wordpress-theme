@@ -2,10 +2,8 @@
 /**
  * Property card.
  *
- * Used by the homepage carousel, the properties archive and related listings,
- * so the card markup exists in exactly one place.
- *
- * Expects to run inside the loop, or receive $args['post_id'].
+ * Shared by the homepage carousel, the archive and related listings, so the
+ * markup lives in one place. Runs in the loop, or takes $args['post_id'].
  *
  * @package Estatein
  */
@@ -25,7 +23,8 @@ $style     = estatein_meta( 'style', $post_id );
 $price     = estatein_meta( 'price', $post_id );
 $excerpt   = get_the_excerpt( $post_id );
 
-// Tags mirror the Figma card: bedrooms, bathrooms, then the property style.
+// Added only when the field has a value, so a listing without a bathroom
+// count shows two tags, not an empty pill. Order is fixed to stay scannable.
 $tags = array();
 
 if ( $bedrooms ) {

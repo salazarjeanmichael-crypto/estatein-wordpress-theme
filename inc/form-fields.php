@@ -2,12 +2,8 @@
 /**
  * Declarative form field rendering.
  *
- * The theme has two forms (property enquiry and general contact) that share a
- * look, validation display and accessibility contract but differ in fields.
- * Rendering each field through one function keeps that contract in a single
- * place: a label is always associated, an invalid field always gets
- * aria-invalid plus an aria-describedby pointing at its message, and a failed
- * submission always repopulates.
+ * Two forms differ in fields but must share one accessibility contract, so
+ * every field renders through here rather than repeating markup per form.
  *
  * @package Estatein
  */
@@ -50,7 +46,8 @@ function estatein_form_field( array $field ) {
 	$value   = estatein_form_value( $name );
 	$classes = 'form-field' . ( $field['full'] ? ' form-field--full' : '' );
 
-	// Shared attributes for every control type.
+	// Built before the branch picks a tag: duplicating these per control type
+	// is how one of them quietly loses its aria-invalid link later on.
 	$attrs = ' id="' . esc_attr( $name ) . '" name="' . esc_attr( $name ) . '"';
 
 	if ( $field['required'] ) {

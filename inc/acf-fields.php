@@ -2,13 +2,8 @@
 /**
  * Optional Advanced Custom Fields integration.
  *
- * The theme does not require ACF — every lookup in helpers.php falls back to a
- * sensible default. When ACF *is* installed this file adds a Site Settings
- * options page so the client can edit the announcement banner, contact details
- * and social links without touching code.
- *
- * Field groups are registered in PHP rather than the database so they are
- * version-controlled and deploy with the theme.
+ * ACF is never required; helpers.php falls back when it is absent. Groups are
+ * declared in PHP, not the database, so they are versioned with the theme.
  *
  * @package Estatein
  */

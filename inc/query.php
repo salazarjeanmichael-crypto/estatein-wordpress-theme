@@ -2,9 +2,8 @@
 /**
  * Property search and filtering.
  *
- * The filter bar on the properties page submits with GET, so a filtered result
- * set has its own shareable, bookmarkable URL and the browser back button
- * behaves as users expect. Every value is sanitised before it reaches WP_Query.
+ * Filters submit with GET so a filtered view is shareable and the back button
+ * behaves. Every value is sanitised before it reaches WP_Query.
  *
  * @package Estatein
  */

@@ -2,9 +2,8 @@
 /**
  * Custom post types and taxonomies.
  *
- * Properties, testimonials and FAQs are first-class content types rather than
- * pages, so the client gets a dedicated admin screen for each and the front end
- * can query, filter and paginate them with a standard WP_Query.
+ * Modelled as post types rather than pages so each gets its own admin screen
+ * and the front end can query, filter and paginate with a plain WP_Query.
  *
  * @package Estatein
  */

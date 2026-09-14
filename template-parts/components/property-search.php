@@ -3,8 +3,7 @@
  * Property search and filter bar.
  *
  * Submits with GET so a filtered view is shareable and the back button works.
- * Every control is a real form element with a label, so the bar is usable with
- * a keyboard and a screen reader.
+ * Every control is a labelled form element, so it works without a mouse.
  *
  * @package Estatein
  */

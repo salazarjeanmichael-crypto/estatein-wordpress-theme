@@ -109,6 +109,37 @@ function estatein_asset_version( $relative ) {
 }
 
 /**
+ * Mark the document as scripted before anything paints.
+ *
+ * The reveal animations hide their targets in CSS, so that rule has to be
+ * live on the first paint or the content flashes in and back out.
+ */
+function estatein_html_class_script() {
+	?>
+	<script>
+	(function (h) {
+		h.className += ' js';
+
+		if (!('IntersectionObserver' in window) ||
+			(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+			h.className += ' no-reveal';
+			return;
+		}
+
+		// If main.js never loads, the CSS above would leave the page blank.
+		// Unhide everything unless that file has claimed the work by then.
+		setTimeout(function () {
+			if (!h.getAttribute('data-reveal-ready')) {
+				h.className += ' no-reveal';
+			}
+		}, 2500);
+	})(document.documentElement);
+	</script>
+	<?php
+}
+add_action( 'wp_head', 'estatein_html_class_script', 1 );
+
+/**
  * Preconnect to the Google Fonts file origin so the font request starts early.
  *
  * @param array  $hints    Current hints.

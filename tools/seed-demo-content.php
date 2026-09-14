@@ -2,10 +2,8 @@
 /**
  * Seed the demo content shown in the Figma design.
  *
- * CLI only, and safe to run repeatedly: every item is matched by slug, so a
- * second run updates rather than duplicates.
- *
- *   php wp-content/themes/estatein/tools/seed-demo-content.php
+ * CLI only. Safe to re-run: items match on slug, so a second pass updates
+ * rather than duplicates. Usage: php tools/seed-demo-content.php
  *
  * @package Estatein
  */
@@ -14,7 +12,8 @@ if ( 'cli' !== php_sapi_name() ) {
 	exit( 'This script runs from the command line only.' );
 }
 
-// Walk up from tools/ to the WordPress root.
+// Four levels up: tools -> estatein -> themes -> wp-content -> root. From
+// __DIR__, not getcwd(), so the script runs from any working directory.
 $root = dirname( __DIR__, 4 );
 
 require_once $root . '/wp-load.php';

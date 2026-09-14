@@ -2,9 +2,8 @@
 /**
  * Template Name: Services
  *
- * Three service blocks from the Figma design. Each block is data plus one
- * shared card partial, so adding a service is a matter of editing the array
- * rather than copying markup.
+ * Each block is data plus one shared card partial, so adding a service means
+ * editing an array rather than copying markup.
  *
  * @package Estatein
  */

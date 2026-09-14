@@ -2,15 +2,8 @@
 /**
  * Form handling: contact enquiries and newsletter sign-ups.
  *
- * Both handlers run on template_redirect, before any output, so a successful
- * submission can redirect (Post/Redirect/Get) and a refresh will not resubmit.
- *
- * Security model for every submission:
- *   1. nonce check    - the request came from our form
- *   2. honeypot check - a hidden field only a bot fills in
- *   3. sanitize       - every value is cast through a WordPress sanitiser
- *   4. validate       - required fields and email format
- *   5. escape on out  - handled in the template
+ * Handlers run on template_redirect, before output, so success can redirect
+ * and a refresh cannot resubmit. Every path is nonce-checked and sanitised.
  *
  * @package Estatein
  */
@@ -181,9 +174,8 @@ add_action( 'template_redirect', 'estatein_handle_contact' );
 /**
  * Where to send the browser after a successful submission.
  *
- * Prefers the URL the form carried in a hidden field, because Referer is
- * optional and is stripped by some privacy tools and proxies. The value is run
- * through wp_validate_redirect() so it can only ever point at this site.
+ * Prefers the form's hidden field over Referer, which privacy tools strip.
+ * Passed through wp_validate_redirect() so it can only point at this site.
  *
  * @return string
  */

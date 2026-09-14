@@ -99,7 +99,8 @@ while ( have_posts() ) :
 		</section>
 
 		<?php
-		// Related: same property type, excluding the current listing.
+		// Matched on type, not location: someone viewing a villa is shopping by
+		// kind of home. Untyped listings fall through to recent, not empty.
 		$types = wp_get_post_terms( get_the_ID(), 'property_type', array( 'fields' => 'ids' ) );
 
 		$related = new WP_Query( array(

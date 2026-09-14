@@ -86,8 +86,8 @@ $query = estatein_property_query( 6 );
 </section>
 
 <?php
-// Anything the client types into the page editor renders here, between the
-// listing and the enquiry form.
+// Read directly rather than via the loop: this template runs its own query,
+// so the_content() here would print the last property in the grid instead.
 $page_content = get_post_field( 'post_content', get_queried_object_id() );
 
 if ( trim( $page_content ) ) :

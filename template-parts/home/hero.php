@@ -20,7 +20,8 @@ $stats = estatein_field( 'hero_stats', array(
 	array( 'value' => '16+',  'label' => __( 'Years of Experience', 'estatein' ) ),
 ) );
 
-// Text for the rotating badge. A trailing space keeps the ring evenly spaced.
+// The trailing space is load-bearing: characters wrap a full 360 degrees, so
+// without it the last letter collides with the first.
 $badge_text = __( 'Discover Your Dream Property ', 'estatein' );
 $badge_len  = max( 1, mb_strlen( $badge_text ) );
 ?>

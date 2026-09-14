@@ -1,9 +1,8 @@
 /**
  * Estatein - front-end behaviour.
  *
- * Everything here is progressive enhancement. The markup is complete and
- * usable on its own; JavaScript only improves the experience. Nothing below
- * throws if an element is missing, so template parts can be removed freely.
+ * Pure progressive enhancement: the markup works without any of this, and
+ * nothing throws on a missing element, so template parts can be removed.
  */
 (function () {
 	'use strict';
@@ -38,7 +37,8 @@
 			}
 		});
 
-		// Reset the toggle state when the layout returns to desktop width.
+		// Above 1100px the CSS shows the nav anyway, so a stale aria-expanded
+		// would announce a menu against a button that is no longer visible.
 		window.addEventListener('resize', function () {
 			if (window.innerWidth > 1100) {
 				setOpen(false);
@@ -157,7 +157,9 @@
 		if (prev) { prev.addEventListener('click', function () { move(-1); }); }
 		if (next) { next.addEventListener('click', function () { move(1); }); }
 
-		// Arrow keys work once focus is inside the carousel.
+		// Bound to the carousel rather than the document: arrow keys belong to
+		// the page for scrolling, and hijacking them globally would break that
+		// for everyone not currently inside a carousel.
 		root.addEventListener('keydown', function (e) {
 			if (e.key === 'ArrowLeft')  { move(-1); }
 			if (e.key === 'ArrowRight') { move(1); }
@@ -258,6 +260,77 @@
 	}
 
 	/* ---------------------------------------------------------------------
+	 * Entrance animations
+	 * ------------------------------------------------------------------ */
+
+	var REVEAL = [
+		'.page-hero__inner', '.hero__text', '.hero__actions', '.hero__stats',
+		'.hero__media', '.section-head', '.feature', '.property-grid > *',
+		'.testimonial-grid > *', '.faq-grid > *', '.carousel', '.service-card',
+		'.promo', '.value', '.value-card', '.step', '.team-card', '.client',
+		'.office', '.enquiry', '.property-search', '.journey__media',
+		'.values__panel', '.cta__inner', '.property-facts', '.result'
+	].join(',');
+
+	function initReveal() {
+		var root = document.documentElement;
+
+		// The inline head script decided this; honouring the same flag keeps
+		// the CSS that hides these elements and this code in agreement.
+		if (!root.classList.contains('js') || root.classList.contains('no-reveal')) {
+			return;
+		}
+
+		var parents = [];
+		var counts = [];
+
+		var io = new IntersectionObserver(function (entries) {
+			entries.forEach(function (entry) {
+				if (!entry.isIntersecting) { return; }
+				entry.target.classList.add('is-visible');
+				io.unobserve(entry.target);
+			});
+		}, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+
+		// Tells the head script's watchdog that this file loaded and took over,
+		// so it does not unhide everything on the assumption that it failed.
+		root.setAttribute('data-reveal-ready', '1');
+
+		Array.prototype.forEach.call(document.querySelectorAll(REVEAL), function (el) {
+			// Carousel slides sit outside the clipped viewport, so they would
+			// never intersect. The carousel itself animates as one block.
+			if (el.closest('.carousel__track')) {
+				el.setAttribute('data-revealed', '');
+				return;
+			}
+
+			var parent = el.parentNode;
+			var at = parents.indexOf(parent);
+
+			if (at === -1) {
+				parents.push(parent);
+				counts.push(0);
+				at = parents.length - 1;
+			}
+
+			var index = counts[at]++;
+
+			// Stagger siblings, capped so a long grid does not crawl in.
+			if (index > 0 && !el.style.getPropertyValue('--reveal-delay')) {
+				el.style.setProperty('--reveal-delay', Math.min(index, 5) * 70 + 'ms');
+			}
+
+			el.addEventListener('animationend', function () {
+				el.setAttribute('data-revealed', '');
+				el.classList.remove('is-visible');
+				el.style.removeProperty('--reveal-delay');
+			});
+
+			io.observe(el);
+		});
+	}
+
+	/* ---------------------------------------------------------------------
 	 * Boot
 	 * ------------------------------------------------------------------ */
 
@@ -266,6 +339,7 @@
 		initDismiss();
 		initFaq();
 		initFilters();
+		initReveal();
 
 		Array.prototype.forEach.call(
 			document.querySelectorAll('[data-carousel]'),

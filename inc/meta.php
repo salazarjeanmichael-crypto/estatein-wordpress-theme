@@ -1,10 +1,9 @@
 <?php
 /**
- * Custom fields for properties and testimonials.
+ * Custom fields for properties, testimonials and team members.
  *
- * These are plain WordPress meta boxes rather than an ACF dependency. The
- * theme therefore works on a bare WordPress install; if the client later adds
- * ACF, estatein_field() will happily read from it instead (see helpers.php).
+ * Native meta boxes rather than an ACF dependency, so the theme works on a
+ * bare install; estatein_field() defers to ACF if it is added later.
  *
  * @package Estatein
  */

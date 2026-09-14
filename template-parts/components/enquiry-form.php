@@ -2,9 +2,8 @@
 /**
  * Property enquiry form ("Let's Make it Happen").
  *
- * Posts to the shared handler in inc/forms.php. On a validation failure the
- * page re-renders with values intact and each bad field marked; on success it
- * redirects, so a refresh cannot resubmit.
+ * Posts to the shared handler in inc/forms.php: a failure re-renders with
+ * values intact and fields marked, a success redirects so refresh is safe.
  *
  * @package Estatein
  */

@@ -2,9 +2,8 @@
 /**
  * Homepage: Featured Properties.
  *
- * Uses a standard WP_Query so the section always reflects what the client has
- * published. The carousel is progressive enhancement — without JavaScript the
- * track wraps into a plain grid and every card stays reachable.
+ * A standard WP_Query, so the section reflects what the client published.
+ * Without JavaScript the carousel track wraps into a plain, readable grid.
  *
  * @package Estatein
  */
