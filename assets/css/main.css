@@ -2328,11 +2328,11 @@ select {
 	color: var(--c-muted);
 	margin: 0;
 }
-/* Fills the column so its bottom edge lines up with the card panel opposite. */
+/* Pushed to the foot of the column rather than stretched, so its bottom edge
+   still meets the card panel but the card stays snug around its own content. */
 .promo--stacked {
-	flex: 1 1 auto;
+	margin-top: auto;
 	align-items: flex-start;
-	justify-content: center;
 	gap: 20px;
 }
 .promo--stacked h3 {
