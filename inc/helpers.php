@@ -218,11 +218,13 @@ function estatein_rating( $rating = 5 ) {
 			);
 			?>
 		</span>
-		<?php for ( $i = 0; $i < $rating; $i++ ) : ?>
-			<svg viewBox="0 0 24 24" fill="#FFC107" aria-hidden="true" focusable="false">
-				<path d="M12 2.5l2.9 5.88 6.49.95-4.7 4.58 1.11 6.46L12 17.32l-5.8 3.05 1.1-6.46-4.69-4.58 6.49-.95L12 2.5z"/>
-			</svg>
-		<?php endfor; ?>
+		<?php
+		// The Figma star is a 44px badge - a #FFE600 star on a dark disc - not a
+		// bare glyph, so it ships as the exported asset rather than inline SVG.
+		for ( $i = 0; $i < $rating; $i++ ) {
+			estatein_icon( 'star-badge', 44 );
+		}
+		?>
 	</div>
 	<?php
 }

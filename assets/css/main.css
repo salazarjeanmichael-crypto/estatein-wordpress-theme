@@ -504,7 +504,7 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
 .feature__icon {
   display: grid; place-items: center;
   padding: 10px;
-  border: 1px solid var(--purple-75);
+  border: 1px solid rgba(166, 133, 250, .22);
   border-radius: 100px;
 }
 .feature__icon-inner {
@@ -632,23 +632,23 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
 .testimonial {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  padding: 40px;
+  gap: 40px;
+  padding: 50px;
   background: var(--grey-08);
   border: 1px solid var(--c-border);
   border-radius: var(--r-card);
 }
 @media (max-width: 640px) { .testimonial { padding: 24px; gap: 24px; } }
 
-.testimonial__stars { display: flex; gap: 8px; }
-.testimonial__stars svg { width: 24px; height: 24px; }
-.testimonial__body { display: flex; flex-direction: column; gap: 10px; }
+.testimonial__stars { display: flex; gap: 10px; }
+.testimonial__stars img { width: 44px; height: 44px; }
+.testimonial__body { display: flex; flex-direction: column; gap: 14px; }
 .testimonial__title { font-size: var(--fs-h3); font-weight: 600; color: var(--c-text); }
-.testimonial__quote { color: var(--c-muted); margin: 0; }
-.testimonial__author { display: flex; align-items: center; gap: 14px; margin-top: auto; }
+.testimonial__quote { color: var(--c-text); margin: 0; }
+.testimonial__author { display: flex; align-items: center; gap: 12px; margin-top: auto; }
 .testimonial__author img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; flex: none; }
-.testimonial__name { display: block; color: var(--c-text); font-weight: 500; }
-.testimonial__loc  { display: block; color: var(--c-muted); font-size: var(--fs-sm); }
+.testimonial__name { display: block; color: var(--c-text); font-size: var(--fs-lg); font-weight: 500; }
+.testimonial__loc  { display: block; color: var(--c-muted); font-size: var(--fs-base); }
 
 
 /* 13. FAQ card ============================================================= */
@@ -666,7 +666,7 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
   flex-direction: column;
   align-items: flex-start;
   gap: 30px;
-  padding: 40px;
+  padding: 50px;
   background: var(--grey-08);
   border: 1px solid var(--c-border);
   border-radius: var(--r-card);
@@ -674,6 +674,9 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
 @media (max-width: 640px) { .faq-card { padding: 24px; gap: 24px; } }
 .faq-card__body { display: flex; flex-direction: column; gap: 10px; }
 .faq-card__q { font-size: var(--fs-h3); font-weight: 600; color: var(--c-text); }
+/* Three lines reserved so answers and buttons align across a row. Only once
+   the cards sit side by side - stacked, the empty space just looks broken. */
+@media (min-width: 700px) { .faq-card__q { min-height: 4.5em; } }
 .faq-card__a { color: var(--c-muted); }
 .faq-card .btn { margin-top: auto; }
 
@@ -709,17 +712,17 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
 .carousel__nav { display: flex; gap: 10px; }
 .carousel__btn {
   display: grid; place-items: center;
-  width: 52px; height: 52px;
+  width: 58px; height: 58px;
   background: var(--grey-10);
   border: 1px solid var(--c-border);
   border-radius: 50%;
   color: var(--c-text);
   cursor: pointer;
-  transition: background-color var(--ease), border-color var(--ease);
+  transition: background-color var(--ease), border-color var(--ease), color var(--ease);
 }
 .carousel__btn:hover:not(:disabled) { background: var(--c-accent); border-color: var(--c-accent); }
-.carousel__btn:disabled { opacity: .4; cursor: not-allowed; }
-.carousel__btn svg { width: 20px; height: 20px; }
+.carousel__btn:disabled { background: transparent; color: var(--grey-50); cursor: not-allowed; }
+.carousel__btn svg { width: 30px; height: 30px; }
 
 
 /* 15. CTA ================================================================== */
@@ -727,7 +730,7 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
 .cta {
   position: relative;
   overflow: hidden;
-  padding-block: 80px;
+  padding-block: 100px;
   background: var(--grey-08);
 }
 .cta__inner {
@@ -737,7 +740,7 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
   justify-content: space-between;
   gap: 30px;
 }
-.cta__text { flex: 1 1 480px; display: flex; flex-direction: column; gap: 14px; }
+.cta__text { flex: 1 1 480px; max-width: 1154px; display: flex; flex-direction: column; gap: 14px; }
 .cta__text p { color: var(--c-muted); }
 .cta .btn { flex: none; }
 
@@ -1174,7 +1177,7 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
   display: grid; place-items: center;
   flex: none;
   padding: 10px;
-  border: 1px solid var(--purple-75);
+  border: 1px solid rgba(166, 133, 250, .22);
   border-radius: 100px;
 }
 .service-card__icon-inner {

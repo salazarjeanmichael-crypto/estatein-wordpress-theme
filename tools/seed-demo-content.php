@@ -56,7 +56,7 @@ function estatein_seed_image( $filename ) {
 	}
 
 	$attachment_id = wp_insert_attachment( array(
-		'post_mime_type' => 'image/jpeg',
+		'post_mime_type' => 'png' === strtolower( pathinfo( $filename, PATHINFO_EXTENSION ) ) ? 'image/png' : 'image/jpeg',
 		'post_title'     => pathinfo( $filename, PATHINFO_FILENAME ),
 		'post_status'    => 'inherit',
 	), $upload['file'] );
@@ -104,6 +104,12 @@ function estatein_seed_post( array $item ) {
 
 	foreach ( ( isset( $item['meta'] ) ? $item['meta'] : array() ) as $key => $value ) {
 		update_post_meta( $post_id, '_estatein_' . $key, $value );
+
+		// estatein_meta() reads ACF first, so seeding only the native key would
+		// leave the old ACF value winning on the front end.
+		if ( function_exists( 'update_field' ) ) {
+			update_field( $key, $value, $post_id );
+		}
 	}
 
 	if ( ! empty( $item['image'] ) ) {
@@ -148,7 +154,7 @@ $properties = array(
 		'excerpt' => 'A chic and fully-furnished 2-bedroom apartment with panoramic city views.',
 		'content' => "A two-bedroom apartment on the twenty-second floor, sold fully furnished. Floor-to-ceiling windows run the length of the living room and both bedrooms, and the building has a residents' gym, roof terrace and 24-hour concierge.\n\nTransport links are on the doorstep, with two underground lines and the business district within fifteen minutes.",
 		'image'   => 'property-2.jpg',
-		'meta'    => array( 'price' => '550000', 'bedrooms' => '2', 'bathrooms' => '2', 'style' => 'Apartment', 'area' => '1,200 sq ft', 'address' => 'Downtown, Chicago' ),
+		'meta'    => array( 'price' => '550000', 'bedrooms' => '2', 'bathrooms' => '2', 'style' => 'Villa', 'area' => '1,200 sq ft', 'address' => 'Downtown, Chicago' ),
 		'terms'   => array( 'property_type' => array( 'Apartment' ), 'property_location' => array( 'Illinois' ) ),
 	),
 	array(
@@ -159,7 +165,7 @@ $properties = array(
 		'excerpt' => 'An elegant 3-bedroom, 2.5-bathroom townhouse in a gated community.',
 		'content' => "A three-bedroom townhouse in a gated development, arranged over three floors with a private garden to the rear. Original brickwork and exposed beams sit alongside a recently rebuilt kitchen and bathrooms.\n\nThe development has its own security gate, visitor parking and a shared green.",
 		'image'   => 'property-3.jpg',
-		'meta'    => array( 'price' => '550000', 'bedrooms' => '3', 'bathrooms' => '3', 'style' => 'Townhouse', 'area' => '1,850 sq ft', 'address' => 'Aspen, Colorado' ),
+		'meta'    => array( 'price' => '550000', 'bedrooms' => '3', 'bathrooms' => '3', 'style' => 'Villa', 'area' => '1,850 sq ft', 'address' => 'Aspen, Colorado' ),
 		'terms'   => array( 'property_type' => array( 'Townhouse' ), 'property_location' => array( 'Colorado' ) ),
 	),
 	array(
@@ -205,6 +211,7 @@ $properties = array(
 $testimonials = array(
 	array(
 		'type'    => 'testimonial',
+		'image'   => 'avatar-1.png',
 		'slug'    => 'exceptional-service',
 		'title'   => 'Exceptional Service!',
 		'content' => 'Our experience with Estatein was outstanding. Their team dedication and professionalism made finding our dream home a breeze. Highly recommended!',
@@ -213,6 +220,7 @@ $testimonials = array(
 	),
 	array(
 		'type'    => 'testimonial',
+		'image'   => 'avatar-2.png',
 		'slug'    => 'efficient-and-reliable',
 		'title'   => 'Efficient and Reliable',
 		'content' => 'Estatein provided us with top-notch service. They helped us sell our property quickly and at a great price. We could not be happier with the results.',
@@ -221,6 +229,7 @@ $testimonials = array(
 	),
 	array(
 		'type'    => 'testimonial',
+		'image'   => 'avatar-3.png',
 		'slug'    => 'trusted-advisors',
 		'title'   => 'Trusted Advisors',
 		'content' => 'The Estatein team guided us through the entire buying process. Their knowledge and commitment to our needs were impressive. Thank you for your support!',
