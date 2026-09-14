@@ -94,7 +94,7 @@ $render_block = function ( array $cards, array $promo ) {
 </section>
 
 <section class="features-section" aria-label="<?php esc_attr_e( 'Service categories', 'estatein' ); ?>">
-	<div class="container">
+	<div class="features-wrap">
 		<ul class="features">
 			<?php foreach ( $features as $feature ) : ?>
 				<li class="feature">

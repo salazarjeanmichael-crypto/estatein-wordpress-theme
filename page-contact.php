@@ -72,7 +72,7 @@ $offices = array(
 </section>
 
 <section class="features-section" aria-label="<?php esc_attr_e( 'Ways to reach us', 'estatein' ); ?>">
-	<div class="container">
+	<div class="features-wrap">
 		<ul class="features">
 			<?php foreach ( $methods as $method ) : ?>
 				<li class="feature">

@@ -38,7 +38,7 @@ if ( ! $features ) {
 }
 ?>
 <section class="features-section" id="features" aria-label="<?php esc_attr_e( 'What Estatein offers', 'estatein' ); ?>">
-	<div class="container">
+	<div class="features-wrap">
 		<ul class="features">
 			<?php foreach ( $features as $feature ) : ?>
 				<li class="feature">

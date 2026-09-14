@@ -468,6 +468,9 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
 
 /* The strip sits in its own bordered panel with a 10px ring, per Figma. */
 .features-section { padding-block: var(--section-y); }
+.features-wrap { width: 100%; max-width: 1920px; margin-inline: auto; }
+/* Once the cards stack, edge-to-edge looks like a mistake rather than a band. */
+@media (max-width: 1099px) { .features-wrap { padding-inline: var(--gutter); } }
 .features {
   display: grid;
   grid-template-columns: 1fr;
@@ -501,19 +504,24 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
 }
 
 /* Two concentric purple rings around the glyph. */
-.feature__icon {
+.feature__icon,
+.service-card__icon {
   display: grid; place-items: center;
-  padding: 10px;
-  border: 1px solid rgba(166, 133, 250, .22);
-  border-radius: 100px;
+  flex: none;
+  width: 82px; height: 82px;
+  background: url("../img/icon-ring.png") center / 82px 82px no-repeat;
 }
-.feature__icon-inner {
-  display: grid; place-items: center;
-  padding: 14px;
-  border: 1px solid var(--purple-75);
-  border-radius: 100px;
+.feature__icon-inner,
+.service-card__icon-inner { display: grid; place-items: center; }
+.feature__icon img,
+.service-card__icon img { width: 34px; height: 34px; }
+
+@media (max-width: 640px) {
+  .feature__icon,
+  .service-card__icon { width: 64px; height: 64px; background-size: 64px 64px; }
+  .feature__icon img,
+  .service-card__icon img { width: 26px; height: 26px; }
 }
-.feature__icon img { width: 34px; height: 34px; }
 
 .feature__title { font-size: var(--fs-lg); font-weight: 600; color: var(--c-text); }
 
@@ -1172,25 +1180,12 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
 .service-card__head h3 { font-size: var(--fs-h3); }
 
 /* Two concentric purple rings, matching the feature strip. */
-.service-card__icon,
 .value-card__icon {
   display: grid; place-items: center;
   flex: none;
   padding: 10px;
   border: 1px solid rgba(166, 133, 250, .22);
   border-radius: 100px;
-}
-.service-card__icon-inner {
-  display: grid; place-items: center;
-  padding: 14px;
-  border: 1px solid var(--purple-75);
-  border-radius: 100px;
-}
-.service-card__icon img { width: 34px; height: 34px; }
-@media (max-width: 640px) {
-  .service-card__icon { padding: 6px; }
-  .service-card__icon-inner { padding: 10px; }
-  .service-card__icon img { width: 26px; height: 26px; }
 }
 
 .value-card h3 { font-size: var(--fs-h3); }
