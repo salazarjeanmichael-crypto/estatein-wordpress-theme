@@ -58,7 +58,7 @@ $badge_len  = max( 1, mb_strlen( $badge_text ) );
 					<?php esc_html_e( 'Learn More', 'estatein' ); ?>
 				</a>
 				<a class="btn btn--primary" href="<?php echo esc_url( estatein_page_url( 'properties' ) ); ?>">
-					<?php esc_html_e( 'Browse Properties', 'estatein' ); ?>
+				<?php esc_html_e( 'Browse Properties', 'estatein' ); ?>
 				</a>
 			</div>
 

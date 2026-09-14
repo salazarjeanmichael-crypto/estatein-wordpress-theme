@@ -384,7 +384,9 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
   .hero__copy { max-width: none; margin-left: 0; padding-block: 40px; gap: 40px; }
 }
 
-.hero__text { position: relative; display: flex; flex-direction: column; gap: 24px; }
+/* Not a positioning context: the badge anchors to .hero so it can sit on the
+   seam between the two columns rather than inside the text box. */
+.hero__text { display: flex; flex-direction: column; gap: 24px; }
 .hero__text p { color: var(--c-muted); }
 
 .hero__actions { display: flex; flex-wrap: wrap; gap: 20px; }
@@ -416,11 +418,19 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
 
 /* The rotating badge that straddles the two hero columns in Figma. It is
    decorative, so it is hidden once the layout stacks and would overlap. */
+/* Shown only from 1400px. Below that the heading reaches the column seam and
+   the badge lands on top of it, which is worse than leaving the flourish out. */
+.hero__badge { display: none; }
+
+@media (min-width: 1400px) {
+  .hero__badge { display: grid; }
+}
+
 .hero__badge {
   position: absolute;
-  top: 0; right: -159px;   /* Figma offset: the badge straddles the photo edge */
+  top: 140px; left: 50%;   /* the seam, where Figma straddles the photo edge */
+  transform: translateX(-50%);
   z-index: 2;
-  display: grid;
   place-items: center;
   width: 175px; height: 175px;
   background: var(--grey-08);
@@ -452,7 +462,6 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
 }
 @keyframes estatein-spin { to { transform: rotate(360deg); } }
 
-@media (max-width: 1099px) { .hero__badge { display: none; } }
 
 
 /* 9. Feature strip ========================================================= */
@@ -719,8 +728,7 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
   position: relative;
   overflow: hidden;
   padding-block: 80px;
-  background: var(--grey-10);
-  border-top: 1px solid var(--c-border);
+  background: var(--grey-08);
 }
 .cta__inner {
   display: flex;
@@ -736,7 +744,8 @@ button, input, textarea, select { font: inherit; letter-spacing: inherit; color:
 
 /* 16. Footer =============================================================== */
 
-.site-footer { background: var(--grey-10); }
+.site-footer { background: var(--grey-08); }
+.site-footer__bottom-wrap { background: var(--grey-10); }
 
 .site-footer__top {
   display: flex;
@@ -1497,3 +1506,71 @@ html.js:not(.no-reveal) .is-visible:not([data-revealed]) {
 .footer-subscribe input.footer-subscribe__send:hover { transform: translateX(2px); opacity: .8; }
 .site-footer__brand .wpcf7-response-output { max-width: 423px; }
 .site-footer__brand .wpcf7-spinner { display: none; }
+
+
+/* 28. Abstract background art ============================================== */
+
+/* The "Abstract Design" layers from the Figma frames. Drawn on a pseudo-element
+   so each section keeps the fill and gradient it already declares. */
+.banner::before,
+.hero::before,
+.cta::before,
+.cta::after,
+.promo::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  background-repeat: no-repeat;
+}
+
+/* Content sits above the art; without this the art paints over the text. */
+.banner > *,
+.hero__grid,
+.cta__inner,
+.promo > * { position: relative; z-index: 1; }
+
+/* Banner shows a thin slice of the same line artwork the hero uses, which is
+   how Figma does it - one 1920x1282 layer offset far above a 63px bar. */
+.banner::before {
+  inset: 0;
+  background-image: url("../img/bg/hero-lines.svg");
+  background-position: center -610px;
+  background-size: 1920px auto;
+  opacity: .6;
+}
+
+.hero::before {
+  inset: 0;
+  background-image: url("../img/bg/hero-lines.svg");
+  background-position: center;
+  background-size: cover;
+  opacity: .35;
+}
+
+/* Isometric cubes, anchored to each end of the band as in the design. */
+.cta::before {
+  left: 0; bottom: 0;
+  width: 725px; height: 394px;
+  background-image: url("../img/bg/cta-cubes-left.svg");
+  background-position: left bottom;
+  background-size: contain;
+}
+.cta::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  right: 0; top: 0;
+  width: 566px; height: 308px;
+  background: url("../img/bg/cta-cubes-right.svg") right top / contain no-repeat;
+}
+
+.promo { position: relative; overflow: hidden; }
+.promo::before {
+  inset: 0;
+  background-image: url("../img/bg/hero-lines.svg");
+  background-position: center;
+  background-size: cover;
+  opacity: .3;
+}
