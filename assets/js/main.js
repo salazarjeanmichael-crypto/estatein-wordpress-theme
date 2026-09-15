@@ -283,6 +283,7 @@
 
 		var parents = [];
 		var counts = [];
+		var stagger = window.innerWidth > 700;
 
 		var io = new IntersectionObserver(function (entries) {
 			entries.forEach(function (entry) {
@@ -315,8 +316,10 @@
 
 			var index = counts[at]++;
 
-			// Stagger siblings, capped so a long grid does not crawl in.
-			if (index > 0 && !el.style.getPropertyValue('--reveal-delay')) {
+			// Stagger siblings, capped so a long grid does not crawl in. Skipped
+			// on a phone, where siblings are stacked and a delayed sibling only
+			// reads as an item arriving late.
+			if (stagger && index > 0 && !el.style.getPropertyValue('--reveal-delay')) {
 				el.style.setProperty('--reveal-delay', Math.min(index, 5) * 70 + 'ms');
 			}
 
@@ -331,6 +334,98 @@
 	}
 
 	/* ---------------------------------------------------------------------
+	 * Property gallery
+	 * ------------------------------------------------------------------ */
+
+	function initGallery() {
+		var root = document.querySelector('[data-gallery]');
+
+		if (!root) {
+			return;
+		}
+
+		var track  = root.querySelector('[data-gallery-track]');
+		var slides = Array.prototype.slice.call(root.querySelectorAll('[data-gallery-slide]'));
+		var thumbs = Array.prototype.slice.call(root.querySelectorAll('[data-gallery-thumb]'));
+		var dots   = Array.prototype.slice.call(root.querySelectorAll('[data-gallery-dot]'));
+		var prev   = root.querySelector('[data-gallery-prev]');
+		var next   = root.querySelector('[data-gallery-next]');
+		var index  = 0;
+
+		if (!track || slides.length < 2) {
+			return;
+		}
+
+		// Two photos at a time on desktop, mirroring the breakpoint in main.css.
+		function perView() {
+			return window.innerWidth > 700 ? 2 : 1;
+		}
+
+		function maxIndex() {
+			return Math.max(0, slides.length - perView());
+		}
+
+		function render() {
+			index = Math.min(index, maxIndex());
+
+			var gap  = parseFloat(getComputedStyle(track).columnGap || '30') || 30;
+			var step = slides[0].getBoundingClientRect().width + gap;
+
+			track.style.transform = 'translateX(' + (-index * step) + 'px)';
+
+			if (prev) { prev.disabled = index === 0; }
+			if (next) { next.disabled = index >= maxIndex(); }
+
+			// Photos scrolled out of the stage must not be reachable by Tab.
+			slides.forEach(function (slide, i) {
+				var visible = i >= index && i < index + perView();
+				slide.setAttribute('aria-hidden', visible ? 'false' : 'true');
+			});
+
+			// Only the leading thumb carries the marker, as in the design; the
+			// second photo on screen is still announced as current.
+			thumbs.forEach(function (thumb, i) {
+				var visible = i >= index && i < index + perView();
+				thumb.classList.toggle('is-active', i === index);
+				thumb.setAttribute('aria-current', visible ? 'true' : 'false');
+			});
+
+			// One dot per stop, so the count follows however many photos a
+			// listing has rather than being fixed in the template.
+			dots.forEach(function (dot, i) {
+				dot.hidden = i > maxIndex();
+				dot.classList.toggle('is-active', i === index);
+			});
+		}
+
+		function show(i) {
+			index = Math.max(0, Math.min(maxIndex(), i));
+			render();
+		}
+
+		thumbs.forEach(function (thumb, i) {
+			thumb.addEventListener('click', function () { show(i); });
+		});
+
+		if (prev) { prev.addEventListener('click', function () { show(index - 1); }); }
+		if (next) { next.addEventListener('click', function () { show(index + 1); }); }
+
+		// Arrow keys once focus is inside, matching the carousels.
+		root.addEventListener('keydown', function (e) {
+			if (e.key === 'ArrowLeft')  { show(index - 1); }
+			if (e.key === 'ArrowRight') { show(index + 1); }
+		});
+
+		var resizeTimer;
+		window.addEventListener('resize', function () {
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(render, 150);
+		});
+
+		render();
+	}
+
+	/* ---------------------------------------------------------------------
 	 * Boot
 	 * ------------------------------------------------------------------ */
 
@@ -340,6 +435,7 @@
 		initFaq();
 		initFilters();
 		initReveal();
+		initGallery();
 
 		Array.prototype.forEach.call(
 			document.querySelectorAll('[data-carousel]'),

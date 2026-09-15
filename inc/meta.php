@@ -28,6 +28,11 @@ function estatein_meta_fields() {
 			'area'      => array( 'label' => __( 'Floor area', 'estatein' ),   'type' => 'text',   'hint' => __( 'e.g. 2,500 sq ft', 'estatein' ) ),
 			'address'   => array( 'label' => __( 'Address', 'estatein' ),      'type' => 'text' ),
 			'year'      => array( 'label' => __( 'Build year', 'estatein' ),   'type' => 'number', 'hint' => __( 'e.g. 2019', 'estatein' ) ),
+			'features'  => array( 'label' => __( 'Key features', 'estatein' ), 'type' => 'textarea', 'hint' => __( 'One per line.', 'estatein' ) ),
+			'fees'      => array( 'label' => __( 'Additional fees', 'estatein' ), 'type' => 'textarea', 'hint' => __( 'One per line: Label | Amount | Note', 'estatein' ) ),
+			'monthly'   => array( 'label' => __( 'Monthly costs', 'estatein' ), 'type' => 'textarea', 'hint' => __( 'One per line: Label | Amount | Note', 'estatein' ) ),
+			'initial'   => array( 'label' => __( 'Total initial costs', 'estatein' ), 'type' => 'textarea', 'hint' => __( 'One per line: Label | Amount | Note', 'estatein' ) ),
+			'expenses'  => array( 'label' => __( 'Monthly expenses', 'estatein' ), 'type' => 'textarea', 'hint' => __( 'One per line: Label | Amount | Note', 'estatein' ) ),
 		),
 		'testimonial' => array(
 			'rating'   => array( 'label' => __( 'Rating (1-5)', 'estatein' ), 'type' => 'number' ),
@@ -89,13 +94,22 @@ function estatein_render_meta_box( $post ) {
 			esc_attr( $id ),
 			esc_html( $field['label'] )
 		);
-		printf(
-			'<input type="%1$s" id="%2$s" name="estatein_meta[%3$s]" value="%4$s" class="widefat">',
-			esc_attr( $field['type'] ),
-			esc_attr( $id ),
-			esc_attr( $key ),
-			esc_attr( $value )
-		);
+		if ( 'textarea' === $field['type'] ) {
+			printf(
+				'<textarea id="%1$s" name="estatein_meta[%2$s]" rows="5" class="widefat">%3$s</textarea>',
+				esc_attr( $id ),
+				esc_attr( $key ),
+				esc_textarea( $value )
+			);
+		} else {
+			printf(
+				'<input type="%1$s" id="%2$s" name="estatein_meta[%3$s]" value="%4$s" class="widefat">',
+				esc_attr( $field['type'] ),
+				esc_attr( $id ),
+				esc_attr( $key ),
+				esc_attr( $value )
+			);
+		}
 
 		if ( ! empty( $field['hint'] ) ) {
 			printf( '<span class="description">%s</span>', esc_html( $field['hint'] ) );
@@ -140,6 +154,9 @@ function estatein_save_meta( $post_id ) {
 
 		if ( 'number' === $field['type'] ) {
 			$value = ( '' === $raw ) ? '' : (string) abs( (float) $raw );
+		} elseif ( 'textarea' === $field['type'] ) {
+			// sanitize_text_field() would collapse the line breaks these rely on.
+			$value = sanitize_textarea_field( $raw );
 		} else {
 			$value = sanitize_text_field( $raw );
 		}

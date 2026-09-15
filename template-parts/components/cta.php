@@ -10,9 +10,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$title = isset( $args['title'] ) ? $args['title'] : __( 'Start Your Real Estate Journey Today', 'estatein' );
-$text  = isset( $args['text'] )  ? $args['text']  : __( 'Your dream property is just a click away. Whether you are looking for a new home, a strategic investment, or expert real estate advice, Estatein is here to assist you every step of the way. Take the first step towards your real estate goals and explore our available properties or get in touch with our team for personalized assistance.', 'estatein' );
-$label = isset( $args['label'] ) ? $args['label'] : __( 'Explore Properties', 'estatein' );
+// A caller's $args wins, then Site Settings, then the copy from the design.
+$title = isset( $args['title'] ) ? $args['title'] : estatein_field( 'cta_title', __( 'Start Your Real Estate Journey Today', 'estatein' ), 'option' );
+$text  = isset( $args['text'] )  ? $args['text']  : estatein_field( 'cta_text', __( 'Your dream property is just a click away. Whether you are looking for a new home, a strategic investment, or expert real estate advice, Estatein is here to assist you every step of the way. Take the first step towards your real estate goals and explore our available properties or get in touch with our team for personalized assistance.', 'estatein' ), 'option' );
+$label = isset( $args['label'] ) ? $args['label'] : estatein_field( 'cta_label', __( 'Explore Properties', 'estatein' ), 'option' );
 $url   = isset( $args['url'] )   ? $args['url']   : estatein_page_url( 'properties' );
 ?>
 <section class="cta" aria-labelledby="cta-title">

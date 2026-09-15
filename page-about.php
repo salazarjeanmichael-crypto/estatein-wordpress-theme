@@ -9,11 +9,11 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
-$stats = estatein_field( 'about_stats', array(
+$stats = estatein_rows_field( 'about_stats', array(
 	array( 'value' => '200+', 'label' => __( 'Happy Customers', 'estatein' ) ),
 	array( 'value' => '10k+', 'label' => __( 'Properties For Clients', 'estatein' ) ),
 	array( 'value' => '16+',  'label' => __( 'Years of Experience', 'estatein' ) ),
-) );
+), array( 'value', 'label' ) );
 
 $values = array(
 	array( 'icon' => 'value-trust',      'title' => __( 'Trust', 'estatein' ),          'text' => __( 'Trust is the cornerstone of every successful real estate transaction.', 'estatein' ) ),
@@ -71,8 +71,8 @@ $team = new WP_Query( array(
 			// default h2 — the design has no separate page title above it.
 			estatein_section_head( array(
 				'tag'   => 'h1',
-				'title' => __( 'Our Journey', 'estatein' ),
-				'text'  => __( 'Our story is one of continuous growth and evolution. We started as a small team with big dreams, determined to create a real estate platform that transcended the ordinary. Over the years, we have expanded our reach, forged valuable partnerships, and gained the trust of countless clients.', 'estatein' ),
+				'title' => estatein_field( 'page_heading', __( 'Our Journey', 'estatein' ) ),
+				'text'  => estatein_field( 'page_intro', __( 'Our story is one of continuous growth and evolution. We started as a small team with big dreams, determined to create a real estate platform that transcended the ordinary. Over the years, we have expanded our reach, forged valuable partnerships, and gained the trust of countless clients.', 'estatein' ) ),
 			) );
 			?>
 			<ul class="hero__stats">

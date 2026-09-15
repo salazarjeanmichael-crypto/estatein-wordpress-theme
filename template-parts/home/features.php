@@ -10,7 +10,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$features = estatein_field( 'home_features', array(
+$features = estatein_rows_field( 'home_features', array(
 	array(
 		'icon'  => 'feature-home',
 		'title' => __( 'Find Your Dream Home', 'estatein' ),
@@ -31,7 +31,7 @@ $features = estatein_field( 'home_features', array(
 		'title' => __( 'Smart Investments, Informed Decisions', 'estatein' ),
 		'url'   => estatein_page_url( 'services' ) . '#strategic-marketing',
 	),
-) );
+), array( 'title', 'url', 'icon' ) );
 
 if ( ! $features ) {
 	return;

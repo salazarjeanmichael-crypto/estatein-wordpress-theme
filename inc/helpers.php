@@ -22,15 +22,25 @@ defined( 'ABSPATH' ) || exit;
  * @return mixed
  */
 function estatein_field( $selector, $fallback = '', $post_id = false ) {
-	if ( ! function_exists( 'get_field' ) ) {
-		return $fallback;
+	if ( function_exists( 'get_field' ) ) {
+		$value = get_field( $selector, $post_id );
+
+		if ( '' !== $value && null !== $value && false !== $value && array() !== $value ) {
+			return $value;
+		}
 	}
 
-	$value = get_field( $selector, $post_id );
+	// Options pages are ACF PRO, so site-wide values come from the theme's own
+	// Site Settings screen when ACF cannot supply them.
+	if ( 'option' === $post_id ) {
+		$settings = estatein_settings();
 
-	return ( '' === $value || null === $value || false === $value || array() === $value )
-		? $fallback
-		: $value;
+		if ( isset( $settings[ $selector ] ) && '' !== $settings[ $selector ] ) {
+			return $settings[ $selector ];
+		}
+	}
+
+	return $fallback;
 }
 
 /**
@@ -282,4 +292,93 @@ function estatein_term_options( $taxonomy ) {
 	}
 
 	return $options;
+}
+
+/**
+ * Split a "Label | Amount | Note" textarea into rows.
+ *
+ * A textarea rather than a repeater because repeaters are an ACF PRO feature,
+ * and this keeps the theme editable on the free plugin and with no plugin.
+ *
+ * @param string $raw   Stored value.
+ * @param int    $parts Columns expected per line.
+ * @return array
+ */
+function estatein_parse_rows( $raw, $parts = 3 ) {
+	$rows = array();
+
+	// \R rather than a newline literal: a value pasted from a spreadsheet
+	// carries CRLF, and one typed into the admin does not.
+	foreach ( preg_split( '/\R/', (string) $raw ) as $line ) {
+		$line = trim( $line );
+
+		if ( '' === $line ) {
+			continue;
+		}
+
+		$cells = array_map( 'trim', explode( '|', $line ) );
+		$rows[] = array_pad( array_slice( $cells, 0, $parts ), $parts, '' );
+	}
+
+	return $rows;
+}
+
+/**
+ * Read a list field that may come back as ACF rows or as piped text.
+ *
+ * Repeaters are ACF PRO, so these ship as a textarea; accepting both shapes
+ * means the same template works if the site is later upgraded.
+ *
+ * @param string $selector Field name.
+ * @param array  $fallback Rows to use when nothing is stored.
+ * @param array  $keys     Column names, in the order they appear on a line.
+ * @return array
+ */
+function estatein_rows_field( $selector, array $fallback, array $keys ) {
+	$raw = estatein_field( $selector, null );
+
+	if ( null === $raw || '' === $raw ) {
+		return $fallback;
+	}
+
+	if ( is_array( $raw ) ) {
+		return $raw;
+	}
+
+	$rows = array();
+
+	foreach ( estatein_parse_rows( $raw, count( $keys ) ) as $row ) {
+		$rows[] = array_combine( $keys, $row );
+	}
+
+	return $rows ? $rows : $fallback;
+}
+
+/**
+ * Images attached to a post, for the property gallery.
+ *
+ * Uses core attachments rather than a gallery field, which is ACF PRO only.
+ * The featured image leads, then anything else uploaded to the post.
+ *
+ * @param int $post_id Post ID.
+ * @return int[] Attachment IDs.
+ */
+function estatein_gallery_ids( $post_id ) {
+	$ids = array();
+
+	if ( has_post_thumbnail( $post_id ) ) {
+		$ids[] = (int) get_post_thumbnail_id( $post_id );
+	}
+
+	$attached = get_posts( array(
+		'post_type'      => 'attachment',
+		'post_mime_type' => 'image',
+		'post_parent'    => $post_id,
+		'posts_per_page' => 20,
+		'orderby'        => 'menu_order ID',
+		'order'          => 'ASC',
+		'fields'         => 'ids',
+	) );
+
+	return array_values( array_unique( array_merge( $ids, $attached ) ) );
 }

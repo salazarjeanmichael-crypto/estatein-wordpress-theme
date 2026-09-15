@@ -25,6 +25,24 @@ function estatein_seo_plugin_active() {
  * @return string
  */
 function estatein_meta_description() {
+	// These pages are built from fields rather than the editor, so there is no
+	// post_content for either this or an SEO plugin to summarise.
+	if ( is_front_page() ) {
+		$text = estatein_field( 'hero_text', '' );
+
+		if ( $text ) {
+			return estatein_trim( $text, 30 );
+		}
+	}
+
+	if ( is_page() ) {
+		$text = estatein_field( 'page_intro', '' );
+
+		if ( $text ) {
+			return estatein_trim( $text, 30 );
+		}
+	}
+
 	if ( is_singular() ) {
 		$post = get_queried_object();
 
@@ -103,6 +121,66 @@ function estatein_meta_tags() {
 add_action( 'wp_head', 'estatein_meta_tags', 2 );
 
 /**
+ * Structured data for the property being viewed.
+ *
+ * Kept separate from the tag output because Rank Math wants the same node
+ * added to its own graph rather than printed as a second script.
+ *
+ * @return array
+ */
+function estatein_listing_schema() {
+	$id     = get_the_ID();
+	$schema = array(
+		'@type'       => 'RealEstateListing',
+		'name'        => get_the_title(),
+		'url'         => get_permalink(),
+		'description' => estatein_meta_description(),
+	);
+
+	if ( has_post_thumbnail( $id ) ) {
+		$schema['image'] = get_the_post_thumbnail_url( $id, 'estatein-wide' );
+	}
+
+	$address = estatein_meta( 'address', $id );
+
+	if ( $address ) {
+		$schema['address'] = array(
+			'@type'         => 'PostalAddress',
+			'streetAddress' => $address,
+		);
+	}
+
+	$bedrooms  = estatein_meta( 'bedrooms', $id );
+	$bathrooms = estatein_meta( 'bathrooms', $id );
+	$area      = estatein_meta( 'area', $id );
+
+	if ( $bedrooms ) {
+		$schema['numberOfRooms'] = (int) $bedrooms;
+	}
+
+	if ( $bathrooms ) {
+		$schema['numberOfBathroomsTotal'] = (int) $bathrooms;
+	}
+
+	if ( $area ) {
+		$schema['floorSize'] = array( '@type' => 'QuantitativeValue', 'name' => $area );
+	}
+
+	$price = estatein_meta( 'price', $id );
+
+	if ( $price ) {
+		$schema['offers'] = array(
+			'@type'         => 'Offer',
+			'price'         => (string) $price,
+			'priceCurrency' => 'USD',
+			'availability'  => 'https://schema.org/InStock',
+		);
+	}
+
+	return $schema;
+}
+
+/**
  * Emit schema.org JSON-LD.
  *
  * A RealEstateListing on a single property, RealEstateAgent elsewhere. Search
@@ -114,28 +192,7 @@ function estatein_schema() {
 	}
 
 	if ( is_singular( 'property' ) ) {
-		$price = get_post_meta( get_the_ID(), '_estatein_price', true );
-
-		$schema = array(
-			'@context'    => 'https://schema.org',
-			'@type'       => 'RealEstateListing',
-			'name'        => get_the_title(),
-			'url'         => get_permalink(),
-			'description' => estatein_meta_description(),
-		);
-
-		if ( has_post_thumbnail() ) {
-			$schema['image'] = get_the_post_thumbnail_url( get_the_ID(), 'estatein-wide' );
-		}
-
-		if ( $price ) {
-			$schema['offers'] = array(
-				'@type'         => 'Offer',
-				'price'         => (string) $price,
-				'priceCurrency' => 'USD',
-				'availability'  => 'https://schema.org/InStock',
-			);
-		}
+		$schema = array( '@context' => 'https://schema.org' ) + estatein_listing_schema();
 	} else {
 		$schema = array(
 			'@context'    => 'https://schema.org',
@@ -158,3 +215,39 @@ function estatein_schema() {
 	);
 }
 add_action( 'wp_head', 'estatein_schema', 3 );
+
+/**
+ * Hand Rank Math the two things it cannot work out for itself.
+ *
+ * The filters no-op when the plugin is absent, so they are registered
+ * unconditionally rather than behind another version check.
+ */
+
+/**
+ * Description fallback, for pages whose copy lives in fields.
+ *
+ * @param string $description Description Rank Math worked out.
+ * @return string
+ */
+function estatein_rank_math_description( $description ) {
+	return $description ? $description : estatein_meta_description();
+}
+add_filter( 'rank_math/frontend/description', 'estatein_rank_math_description' );
+
+/**
+ * Add the listing node to Rank Math's graph on a single property.
+ *
+ * Price, bedrooms and floor area are custom fields, so no plugin can discover
+ * them; this is the one piece of schema the theme has to supply.
+ *
+ * @param array $data Nodes Rank Math will output.
+ * @return array
+ */
+function estatein_rank_math_schema( $data ) {
+	if ( is_singular( 'property' ) ) {
+		$data['estateinListing'] = estatein_listing_schema();
+	}
+
+	return $data;
+}
+add_filter( 'rank_math/json_ld', 'estatein_rank_math_schema', 20 );

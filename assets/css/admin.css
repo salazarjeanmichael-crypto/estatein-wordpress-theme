@@ -1,0 +1,97 @@
+/**
+ * Row editor styling.
+ *
+ * Borrows the core admin's own metrics rather than inventing a look, so the
+ * control reads as part of WordPress and not as a theme bolt-on.
+ */
+
+.estatein-rows {
+	--estatein-line: #dcdcde;
+	max-width: 900px;
+}
+
+/* The textarea stays in the DOM and keeps holding the value; only the editor
+   above it is what anyone interacts with. */
+.estatein-rows__source {
+	display: none;
+}
+
+.estatein-rows__head,
+.estatein-rows__row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.estatein-rows__head {
+	padding: 0 0 6px;
+	color: #646970;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+}
+
+.estatein-rows__row {
+	padding: 6px 0;
+	border-top: 1px solid var(--estatein-line);
+}
+
+.estatein-rows__cell {
+	min-width: 0;
+}
+
+.estatein-rows__cell input,
+.estatein-rows__cell select {
+	width: 100%;
+	margin: 0;
+}
+
+.estatein-rows__tools {
+	display: flex;
+	flex: none;
+	gap: 2px;
+	width: 84px;
+	justify-content: flex-end;
+}
+
+.estatein-rows__btn {
+	width: 26px;
+	height: 26px;
+	padding: 0;
+	background: none;
+	border: 1px solid transparent;
+	border-radius: 3px;
+	color: #787c82;
+	font-size: 14px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.estatein-rows__btn:hover {
+	border-color: var(--estatein-line);
+	color: #1d2327;
+}
+
+.estatein-rows__btn--remove:hover {
+	border-color: #d63638;
+	color: #d63638;
+}
+
+.estatein-rows__add {
+	margin-top: 10px;
+}
+
+@media (max-width: 782px) {
+	.estatein-rows__head {
+		display: none;
+	}
+
+	.estatein-rows__row {
+		flex-wrap: wrap;
+	}
+
+	.estatein-rows__cell {
+		flex: 1 1 100% !important;
+	}
+}

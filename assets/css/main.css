@@ -1311,8 +1311,11 @@ select {
 	}
 }
 
+/* min-width 0 so the column can shrink past the intrinsic width of the
+   newsletter field, which otherwise widens the whole footer on a phone. */
 .site-footer__brand {
 	flex: 0 1 538px;
+	min-width: 0;
 	display: flex;
 	flex-direction: column;
 	gap: 30px;
@@ -1399,6 +1402,33 @@ select {
 	color: var(--purple-75);
 }
 
+/* Phone: the design splits the menus into two columns, rules each group off
+   and runs one unbroken divider down the middle, which a per-cell border
+   cannot do because the last row has no right-hand group to carry it. */
+@media (max-width: 700px) {
+	.footer-cols {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0;
+		background: linear-gradient(var(--c-border), var(--c-border)) 50% 0 / 1px 100% no-repeat;
+	}
+	.footer-col {
+		padding-bottom: 30px;
+		border-bottom: 1px solid var(--c-border);
+	}
+	.footer-col:nth-child(n + 3) {
+		padding-top: 30px;
+	}
+	.footer-col:nth-child(odd) {
+		padding-right: 20px;
+	}
+	.footer-col:nth-child(even) {
+		padding-left: 20px;
+	}
+	.footer-col h2 {
+		margin-bottom: 20px;
+	}
+}
+
 .site-footer__bottom {
 	display: flex;
 	flex-wrap: wrap;
@@ -1417,6 +1447,27 @@ select {
 }
 .site-footer__legal a:hover {
 	color: var(--purple-75);
+}
+
+/* Phone: the design centres this bar and leads with the social row, so the
+   order is flipped here rather than in the markup, where the legal line
+   should still come first for a screen reader. */
+@media (max-width: 700px) {
+	.site-footer__bottom {
+		flex-direction: column;
+		gap: 24px;
+		padding-block: 30px;
+		text-align: center;
+	}
+	.site-footer__legal {
+		order: 2;
+		flex-direction: column;
+		gap: 16px;
+		align-items: center;
+	}
+	.site-footer__bottom .social {
+		order: 1;
+	}
 }
 
 .social {
@@ -1456,7 +1507,7 @@ select {
 @media (min-width: 700px) {
 	.form-grid {
 		grid-template-columns: repeat(2, 1fr);
-		gap: 40px 30px;
+		gap: 30px;
 	}
 }
 @media (min-width: 1100px) {
@@ -1500,6 +1551,7 @@ select {
 .form-field select,
 .form-field textarea {
 	width: 100%;
+	min-height: 68px;
 	padding: 22px 20px;
 	background: var(--grey-10);
 	border: 1px solid var(--c-border);
@@ -1519,7 +1571,7 @@ select {
 	border-color: var(--c-accent);
 }
 .form-field textarea {
-	min-height: 180px;
+	min-height: 170px;
 	resize: vertical;
 }
 
@@ -1531,6 +1583,13 @@ select {
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%23666666' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
 	background-position: right 20px center;
+}
+
+/* Height comes from min-height so a single-line control lands on the design's
+   68px whatever the inherited line-height does. */
+.form-field input,
+.form-field select {
+	padding-block: 0;
 }
 
 /* Preferred contact method: two fields side by side, each with its glyph and a
@@ -1878,6 +1937,43 @@ select {
 }
 .filter__reset {
 	align-self: center;
+}
+
+/* Phone: the Figma frame keeps one row but drops the button to its icon, which
+   is the only way the field itself still has room to be typed in. */
+@media (max-width: 760px) {
+	.property-search__bar-wrap {
+		padding-inline: 0;
+	}
+	.property-search__bar {
+		gap: 10px;
+		padding: 10px 10px 10px 20px;
+		border-radius: var(--r-card);
+		box-shadow: 0 0 0 4px #191919;
+	}
+	.property-search__bar input {
+		font-size: 1rem;
+	}
+	.property-search__bar .btn {
+		padding: 12px 18px;
+	}
+	.property-search__label {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		padding: 0;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+	.property-search__filters {
+		gap: 20px;
+		padding: 20px;
+	}
+	.filter {
+		padding: 14px 16px;
+	}
 }
 
 /* Page heroes carry the same line artwork as the homepage hero. */
@@ -2836,6 +2932,25 @@ html.js:not(.no-reveal) .is-visible:not([data-revealed]) {
 	}
 }
 
+@keyframes estatein-fade {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* Phone: everything is stacked, so items arrive one at a time and a rise plus
+   a stagger reads as a jump against the scroll rather than a sweep. */
+@media (max-width: 700px) {
+	html.js:not(.no-reveal) .is-visible:not([data-revealed]) {
+		animation-name: estatein-fade;
+		animation-duration: 0.4s;
+		animation-delay: 0ms;
+	}
+}
+
 /* The hero is above the fold, so it plays on load, leading with the copy. */
 .hero__text {
 	--reveal-delay: 0ms;
@@ -2924,7 +3039,10 @@ html.js:not(.no-reveal) .is-visible:not([data-revealed]) {
 	min-width: 0;
 	width: auto;
 }
+/* CF7 wraps the control in a div, so it is not a flex item and keeps an
+   input's default intrinsic width unless told otherwise. */
 .footer-subscribe input[type="email"] {
+	width: 100%;
 	padding-left: 34px;
 	background: transparent url("../img/icons/mail.svg") left center / 24px 24px no-repeat;
 }
@@ -3036,4 +3154,408 @@ html.js:not(.no-reveal) .is-visible:not([data-revealed]) {
 	background-image: url("../img/bg/hero-lines.svg");
 	background-position: calc(50% + 334px) calc(50% - 98px);
 	background-size: 1924px 1286px;
+}
+
+/* 29. Property details ===================================================== */
+
+.detail-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 24px;
+	margin-bottom: 50px;
+}
+.detail-head__title {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.detail-head__where {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	color: var(--c-muted);
+}
+.detail-head__price {
+	margin: 0;
+	text-align: right;
+}
+.detail-head__price dt {
+	color: var(--c-muted);
+	font-size: var(--fs-base);
+}
+.detail-head__price dd {
+	margin: 0;
+	font-size: var(--fs-h3);
+	font-weight: 600;
+	color: var(--c-text);
+}
+/* Stacked under the title once the row wraps, where there is no longer a right
+   edge to align to. */
+@media (max-width: 700px) {
+	.detail-head__price {
+		text-align: left;
+	}
+}
+
+/* Gallery: nine thumbs over a two-up stage, as in the design. */
+.gallery {
+	padding: 50px;
+	background: var(--grey-10);
+	border-radius: var(--r-card);
+}
+@media (max-width: 640px) {
+	.gallery {
+		padding: 20px;
+	}
+}
+
+/* The strip is its own darker panel in the design, inset inside the card. */
+.gallery__thumbs {
+	display: flex;
+	gap: 20px;
+	padding: 20px;
+	margin-bottom: 30px;
+	background: var(--grey-08);
+	border-radius: var(--r-card);
+}
+.gallery__thumbs > li {
+	flex: 1 1 0;
+	min-width: 0;
+}
+.gallery__thumb {
+	display: block;
+	width: 100%;
+	padding: 0;
+	border: 0;
+	border-radius: var(--r-btn);
+	background: none;
+	cursor: pointer;
+	overflow: hidden;
+	opacity: 0.75;
+	transition: opacity var(--ease), outline-color var(--ease);
+	outline: 2px solid transparent;
+	outline-offset: 2px;
+}
+.gallery__thumb img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 144 / 94;
+	object-fit: cover;
+}
+.gallery__thumb.is-active,
+.gallery__thumb:hover,
+.gallery__thumb:focus-visible {
+	opacity: 1;
+}
+.gallery__thumb.is-active {
+	outline-color: var(--c-accent);
+}
+/* Nine thumbs cannot shrink below a usable target, so the strip scrolls. */
+@media (max-width: 900px) {
+	.gallery__thumbs {
+		gap: 10px;
+		padding: 10px;
+		overflow-x: auto;
+		scrollbar-width: thin;
+	}
+	.gallery__thumbs > li {
+		flex: 0 0 96px;
+	}
+}
+
+.gallery__stage {
+	overflow: hidden;
+}
+.gallery__track {
+	display: flex;
+	gap: 30px;
+	transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.gallery__slide {
+	flex: 0 0 calc((100% - 30px) / 2);
+	margin: 0;
+}
+.gallery__slide img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 733 / 583;
+	object-fit: cover;
+	border-radius: var(--r-card);
+}
+@media (max-width: 700px) {
+	.gallery__track {
+		gap: 16px;
+	}
+	.gallery__slide {
+		flex-basis: 100%;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.gallery__track {
+		transition: none;
+	}
+}
+
+.gallery__nav {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: max-content;
+	max-width: 100%;
+	padding: 10px;
+	margin: 30px auto 0;
+	background: var(--grey-08);
+	border-radius: var(--r-pill);
+}
+.gallery__dots {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	margin: 0;
+	padding: 0 10px;
+	list-style: none;
+}
+/* A listing with many photos would push the arrows off a phone screen, so the
+   dots give up width before the controls do. */
+@media (max-width: 640px) {
+	.gallery__dots {
+		gap: 3px;
+		padding: 0 4px;
+		min-width: 0;
+		overflow: hidden;
+	}
+	.gallery__dot {
+		flex: 0 1 12px;
+	}
+}
+.gallery__dot {
+	width: 20px;
+	height: 5px;
+	border-radius: var(--r-pill);
+	background: #4c4c4c;
+	transition: background var(--ease);
+}
+.gallery__dot.is-active {
+	background: var(--c-accent);
+}
+
+.detail-split {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 30px;
+	margin-top: 50px;
+	align-items: start;
+}
+@media (min-width: 1000px) {
+	.detail-split {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+.detail-panel {
+	display: flex;
+	flex-direction: column;
+	gap: 50px;
+	padding: 50px;
+	border: 1px solid var(--c-border);
+	border-radius: var(--r-card);
+}
+@media (max-width: 640px) {
+	.detail-panel {
+		padding: 30px;
+		gap: 30px;
+	}
+}
+.detail-panel h2 {
+	font-size: var(--fs-h3);
+}
+.detail-panel__text {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+.detail-panel__text .entry p {
+	color: var(--c-muted);
+	margin-bottom: 0;
+}
+
+.detail-facts {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	margin: 0;
+	padding-top: 20px;
+	border-top: 1px solid var(--c-border);
+}
+.detail-facts > div {
+	flex: 1 1 140px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.detail-facts > div + div {
+	padding-left: 20px;
+	border-left: 1px solid var(--c-border);
+}
+.detail-facts dt {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	color: var(--c-muted);
+	font-size: var(--fs-base);
+}
+.detail-facts dd {
+	margin: 0;
+	font-size: var(--fs-h3);
+	font-weight: 600;
+	color: var(--c-text);
+}
+
+/* Each amenity sits on a purple left rule over a faint gradient, per Figma. */
+.feature-list {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+.feature-list li {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 18px 24px;
+	border-left: 1px solid var(--c-accent);
+	background: linear-gradient(90deg, rgba(255, 255, 255, 0.021), rgba(255, 255, 255, 0));
+	color: var(--c-muted);
+}
+
+.detail-inquire {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 30px;
+	align-items: start;
+}
+@media (min-width: 1000px) {
+	.detail-inquire {
+		/* Figma has 519 + 100 + 984 = 1603 inside a 1596 grid, so the seven
+		   spare pixels come off the text column and the card stays exact. */
+		grid-template-columns: minmax(0, 512px) minmax(0, 1fr);
+		gap: 100px;
+	}
+}
+.detail-inquire__intro .section-head {
+	margin-bottom: 0;
+}
+/* The card stops at its design width rather than filling the column, which on
+   a wide screen would stretch every field well past a comfortable line. */
+.detail-inquire__form {
+	max-width: 984px;
+}
+
+.pricing-note {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 20px;
+	padding: 24px 30px;
+	margin-bottom: 30px;
+	background: var(--grey-10);
+	border-radius: var(--r-card);
+	color: var(--c-muted);
+}
+.pricing-note b {
+	color: var(--c-text);
+	font-weight: 600;
+}
+
+.pricing-cards {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+.pricing-card {
+	padding: 50px;
+	border: 1px solid var(--c-border);
+	border-radius: var(--r-card);
+}
+@media (max-width: 640px) {
+	.pricing-card {
+		padding: 30px;
+	}
+}
+.pricing-card__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	padding-bottom: 40px;
+	border-bottom: 1px solid var(--c-border);
+}
+.pricing-card__head h3 {
+	font-size: var(--fs-h3);
+}
+.pricing-rows {
+	display: grid;
+	grid-template-columns: 1fr;
+	margin: 0;
+}
+/* Dividers are drawn on the rows themselves, so a card with an odd number of
+   rows still ends flush with the card padding instead of a trailing gap. */
+.pricing-rows > div {
+	padding-top: 40px;
+}
+.pricing-rows > div + div {
+	margin-top: 40px;
+	border-top: 1px solid var(--c-border);
+}
+@media (min-width: 700px) {
+	.pricing-rows {
+		grid-template-columns: repeat(2, 1fr);
+	}
+	.pricing-rows > div + div {
+		margin-top: 0;
+		border-top: 0;
+	}
+	.pricing-rows > div:nth-child(odd) {
+		padding-right: 40px;
+	}
+	.pricing-rows > div:nth-child(even) {
+		padding-left: 40px;
+		border-left: 1px solid var(--c-border);
+	}
+	.pricing-rows > div:nth-child(n + 3) {
+		margin-top: 40px;
+		border-top: 1px solid var(--c-border);
+	}
+}
+.pricing-rows dt {
+	color: var(--c-muted);
+	font-size: var(--fs-base);
+	margin-bottom: 10px;
+}
+.pricing-rows dd {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+}
+.pricing-rows dd b {
+	font-size: var(--fs-h3);
+	font-weight: 600;
+	color: var(--c-text);
+}
+.pricing-rows__note {
+	padding: 6px 14px;
+	background: var(--grey-10);
+	border: 1px solid var(--c-border);
+	border-radius: var(--r-pill);
+	font-size: var(--fs-sm);
+	color: var(--c-muted);
+}
+
+/* Prefilled and not editable: it names the listing the form was opened from. */
+.form-field input.is-pinned {
+	color: var(--c-text);
+	cursor: default;
 }

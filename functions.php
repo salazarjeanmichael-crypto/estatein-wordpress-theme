@@ -15,6 +15,8 @@ require_once ESTATEIN_DIR . '/inc/helpers.php';
 require_once ESTATEIN_DIR . '/inc/cpt.php';
 require_once ESTATEIN_DIR . '/inc/meta.php';
 require_once ESTATEIN_DIR . '/inc/query.php';
+require_once ESTATEIN_DIR . '/inc/settings.php';
+require_once ESTATEIN_DIR . '/inc/admin-ui.php';
 require_once ESTATEIN_DIR . '/inc/acf-fields.php';
 require_once ESTATEIN_DIR . '/inc/forms.php';
 require_once ESTATEIN_DIR . '/inc/form-fields.php';

@@ -38,6 +38,29 @@ function estatein_form_state() {
 add_filter( 'wpcf7_autop_or_not', '__return_false' );
 
 /**
+ * Pre-fill the inquiry form's Selected Property from the post being viewed.
+ *
+ * Done with a filter rather than a dynamic-text plugin, so the form carries the
+ * listing it was opened from without adding another dependency.
+ *
+ * @param WPCF7_FormTag $tag Form tag being rendered.
+ * @return WPCF7_FormTag
+ */
+function estatein_prefill_property( $tag ) {
+	if ( 'selected_property' !== $tag->name || ! is_singular( 'property' ) ) {
+		return $tag;
+	}
+
+	$address = estatein_meta( 'address', get_the_ID() );
+	$label   = get_the_title() . ( $address ? ', ' . $address : '' );
+
+	$tag->values = array( $label );
+
+	return $tag;
+}
+add_filter( 'wpcf7_form_tag', 'estatein_prefill_property' );
+
+/**
  * Render a Contact Form 7 form, if one has been provisioned for this slot.
  *
  * Returns false rather than printing when CF7 is absent or the form was

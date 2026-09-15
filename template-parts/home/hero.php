@@ -12,13 +12,13 @@ defined( 'ABSPATH' ) || exit;
 
 $heading = estatein_field( 'hero_heading', __( 'Discover Your Dream Property with Estatein', 'estatein' ) );
 $text    = estatein_field( 'hero_text', __( 'Your journey to finding the perfect property begins here. Explore our listings to find the home that matches your dreams.', 'estatein' ) );
-$image   = estatein_field( 'hero_image', '' );
+$image   = estatein_field( 'hero_image', 0 );
 
-$stats = estatein_field( 'hero_stats', array(
+$stats = estatein_rows_field( 'hero_stats', array(
 	array( 'value' => '200+', 'label' => __( 'Happy Customers', 'estatein' ) ),
 	array( 'value' => '10k+', 'label' => __( 'Properties For Clients', 'estatein' ) ),
 	array( 'value' => '16+',  'label' => __( 'Years of Experience', 'estatein' ) ),
-) );
+), array( 'value', 'label' ) );
 
 // The trailing space is load-bearing: characters wrap a full 360 degrees, so
 // without it the last letter collides with the first.
@@ -76,14 +76,18 @@ $badge_len  = max( 1, mb_strlen( $badge_text ) );
 		</div>
 
 		<div class="hero__media">
-			<?php if ( $image && is_array( $image ) ) : ?>
-				<img src="<?php echo esc_url( $image['url'] ); ?>"
-				     alt="<?php echo esc_attr( $image['alt'] ); ?>"
-				     width="<?php echo esc_attr( $image['width'] ); ?>"
-				     height="<?php echo esc_attr( $image['height'] ); ?>"
-				     fetchpriority="high" decoding="async">
+			<?php if ( $image ) : ?>
+				<?php
+				// fetchpriority high: this is the largest contentful paint element.
+				// Full size, not a crop: the slot is portrait and object-fit needs
+				// the whole frame to work with.
+				echo wp_get_attachment_image( (int) $image, 'full', false, array(
+					'alt'           => get_post_meta( (int) $image, '_wp_attachment_image_alt', true ),
+					'fetchpriority' => 'high',
+					'decoding'      => 'async',
+				) );
+				?>
 			<?php else : ?>
-				<?php /* fetchpriority high: this is the largest contentful paint element. */ ?>
 				<img src="<?php echo esc_url( ESTATEIN_URI . '/assets/img/hero.jpg' ); ?>"
 				     alt="<?php esc_attr_e( 'Glass-fronted apartment tower against a clear sky', 'estatein' ); ?>"
 				     width="960" height="814"

@@ -41,6 +41,23 @@ function estatein_acf_field( $name, $label, $type = 'text', array $extra = array
 }
 
 /**
+ * Settings shared by the pricing textareas.
+ *
+ * Repeaters are ACF PRO, so each pricing card is one textarea of piped rows;
+ * spelling the syntax out in the instructions keeps that usable for a client.
+ *
+ * @param string $extra Optional sentence appended to the instructions.
+ * @return array
+ */
+function estatein_acf_rows_args( $extra = '' ) {
+	return array(
+		'instructions' => trim( __( 'Each row becomes a line in this pricing card.', 'estatein' ) . ' ' . $extra ),
+		'rows'         => 6,
+		'new_lines'    => '',
+	);
+}
+
+/**
  * Register the theme's field groups.
  */
 function estatein_acf_fields() {
@@ -67,12 +84,14 @@ function estatein_acf_fields() {
 			),
 		),
 		'fields' => array(
+
 			estatein_acf_field( 'price', __( 'Price (USD)', 'estatein' ), 'number', array(
 				'instructions' => __( 'Digits only, e.g. 550000. Formatting is applied on output.', 'estatein' ),
 				'min'          => 0,
 				'wrapper'      => array( 'width' => '33' ),
 			) ),
 			estatein_acf_field( 'bedrooms', __( 'Bedrooms', 'estatein' ), 'number', array(
+				'instructions' => __( 'Shown in the facts row under the description.', 'estatein' ),
 				'min'     => 0,
 				'wrapper' => array( 'width' => '33' ),
 			) ),
@@ -80,21 +99,135 @@ function estatein_acf_fields() {
 				'min'     => 0,
 				'wrapper' => array( 'width' => '34' ),
 			) ),
+			estatein_acf_field( 'area', __( 'Area', 'estatein' ), 'text', array(
+				'instructions' => __( 'Free text, e.g. 2,500 Square Feet.', 'estatein' ),
+				'wrapper'      => array( 'width' => '33' ),
+			) ),
 			estatein_acf_field( 'style', __( 'Style', 'estatein' ), 'text', array(
 				'instructions' => __( 'Shown on the third card tag, e.g. Villa.', 'estatein' ),
 				'wrapper'      => array( 'width' => '33' ),
 			) ),
-			estatein_acf_field( 'area', __( 'Floor area', 'estatein' ), 'text', array(
-				'instructions' => __( 'e.g. 2,500 sq ft', 'estatein' ),
-				'wrapper'      => array( 'width' => '33' ),
-			) ),
-			estatein_acf_field( 'address', __( 'Address', 'estatein' ), 'text', array(
-				'wrapper' => array( 'width' => '34' ),
-			) ),
 			estatein_acf_field( 'year', __( 'Build year', 'estatein' ), 'number', array(
 				'instructions' => __( 'Four digits, e.g. 2019.', 'estatein' ),
 				'min'          => 1800,
-				'wrapper'      => array( 'width' => '33' ),
+				'wrapper'      => array( 'width' => '34' ),
+			) ),
+			estatein_acf_field( 'address', __( 'Address', 'estatein' ), 'text', array(
+				'instructions' => __( 'Appears beside the title and is carried into the inquiry form.', 'estatein' ),
+			) ),
+
+			estatein_acf_field( 'features', __( 'Key features and amenities', 'estatein' ), 'textarea', array(
+				'instructions' => __( 'Each one becomes a row in the Key Features and Amenities panel.', 'estatein' ),
+				'rows'         => 8,
+				'new_lines'    => '',
+			) ),
+
+			estatein_acf_field( 'pricing_intro', __( 'Comprehensive Pricing Details', 'estatein' ), 'message', array(
+				'message' => __( 'Each box below becomes one card in the pricing section on the listing. Leave a box empty to drop that card. The listing price is added to Total Initial Costs on its own.', 'estatein' ),
+			) ),
+
+			estatein_acf_field( 'fees', __( 'Additional Fees', 'estatein' ), 'textarea', estatein_acf_rows_args() ),
+			estatein_acf_field( 'monthly', __( 'Monthly Costs', 'estatein' ), 'textarea', estatein_acf_rows_args() ),
+			estatein_acf_field( 'initial', __( 'Total Initial Costs', 'estatein' ), 'textarea', estatein_acf_rows_args(
+				__( 'The listing price is added as the first row automatically, so it never has to be kept in step by hand.', 'estatein' )
+			) ),
+			estatein_acf_field( 'expenses', __( 'Monthly Expenses', 'estatein' ), 'textarea', estatein_acf_rows_args() ),
+		),
+	) );
+
+	/* --- Home page ----------------------------------------------------- */
+	acf_add_local_field_group( array(
+		'key'            => 'group_estatein_home',
+		'title'          => __( 'Home Page Content', 'estatein' ),
+		'position'       => 'normal',
+		'menu_order'     => 0,
+		'hide_on_screen' => array( 'custom_fields' ),
+		'location'       => array(
+			array(
+				array(
+					'param'    => 'page_type',
+					'operator' => '==',
+					'value'    => 'front_page',
+				),
+			),
+		),
+		'fields' => array(
+			estatein_acf_field( 'hero_heading', __( 'Hero heading', 'estatein' ), 'text', array(
+				'instructions' => __( 'The h1 at the top of the home page.', 'estatein' ),
+			) ),
+			estatein_acf_field( 'hero_text', __( 'Hero text', 'estatein' ), 'textarea', array( 'rows' => 3, 'new_lines' => '' ) ),
+			estatein_acf_field( 'hero_image', __( 'Hero photo', 'estatein' ), 'image', array(
+				'return_format' => 'id',
+				'preview_size'  => 'medium',
+				'instructions'  => __( 'Roughly 3:4. Falls back to the photo shipped with the theme.', 'estatein' ),
+			) ),
+			estatein_acf_field( 'hero_stats', __( 'Hero statistics', 'estatein' ), 'textarea', array(
+				'instructions' => __( 'The counters under the hero buttons.', 'estatein' ),
+				'rows'         => 4,
+				'new_lines'    => '',
+			) ),
+			estatein_acf_field( 'home_features', __( 'Feature tiles', 'estatein' ), 'textarea', array(
+				'instructions' => __( 'The four linked tiles in the strip below the hero.', 'estatein' ),
+				'rows'         => 5,
+				'new_lines'    => '',
+			) ),
+		),
+	) );
+
+	/* --- Pages --------------------------------------------------------- */
+	acf_add_local_field_group( array(
+		'key'            => 'group_estatein_page',
+		'title'          => __( 'Page Heading', 'estatein' ),
+		'position'       => 'normal',
+		'menu_order'     => 0,
+		'hide_on_screen' => array( 'custom_fields' ),
+		// Everything except the front page, which has its own group above.
+		'location'       => array(
+			array(
+				array(
+					'param'    => 'post_type',
+					'operator' => '==',
+					'value'    => 'page',
+				),
+				array(
+					'param'    => 'page_type',
+					'operator' => '!=',
+					'value'    => 'front_page',
+				),
+			),
+		),
+		'fields' => array(
+			estatein_acf_field( 'page_heading', __( 'Heading', 'estatein' ), 'text', array(
+				'instructions' => __( 'Replaces the heading at the top of the page. Leave empty to use the page title.', 'estatein' ),
+			) ),
+			estatein_acf_field( 'page_intro', __( 'Intro text', 'estatein' ), 'textarea', array(
+				'instructions' => __( 'The paragraph under the heading.', 'estatein' ),
+				'rows'         => 3,
+				'new_lines'    => '',
+			) ),
+		),
+	) );
+
+	/* --- About page ---------------------------------------------------- */
+	acf_add_local_field_group( array(
+		'key'            => 'group_estatein_about',
+		'title'          => __( 'About Page Content', 'estatein' ),
+		'position'       => 'normal',
+		'hide_on_screen' => array( 'custom_fields' ),
+		'location'       => array(
+			array(
+				array(
+					'param'    => 'page_template',
+					'operator' => '==',
+					'value'    => 'page-about.php',
+				),
+			),
+		),
+		'fields' => array(
+			estatein_acf_field( 'about_stats', __( 'Statistics', 'estatein' ), 'textarea', array(
+				'instructions' => __( 'The counters beside the journey photo.', 'estatein' ),
+				'rows'         => 4,
+				'new_lines'    => '',
 			) ),
 		),
 	) );

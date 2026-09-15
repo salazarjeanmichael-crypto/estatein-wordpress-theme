@@ -71,7 +71,8 @@ $controls = array(
 			       placeholder="<?php esc_attr_e( 'Search For A Property', 'estatein' ); ?>">
 			<button class="btn btn--primary" type="submit">
 				<?php estatein_icon( 'search', 24 ); ?>
-				<?php esc_html_e( 'Find Property', 'estatein' ); ?>
+				<?php /* Wrapped so the phone layout can drop to the icon alone. */ ?>
+				<span class="property-search__label"><?php esc_html_e( 'Find Property', 'estatein' ); ?></span>
 			</button>
 		</div>
 	</div>

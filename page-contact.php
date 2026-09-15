@@ -66,8 +66,8 @@ $offices = array(
 
 <section class="page-hero">
 	<div class="container page-hero__inner">
-		<h1><?php esc_html_e( 'Get in Touch with Estatein', 'estatein' ); ?></h1>
-		<p><?php esc_html_e( 'Welcome to Estatein Contact Us page. We are here to assist you with any inquiries, requests, or feedback you may have. Whether you are looking to buy or sell a property, explore investment opportunities, or simply want to connect, we are just a message away.', 'estatein' ); ?></p>
+		<h1><?php echo esc_html( estatein_field( 'page_heading', __( 'Get in Touch with Estatein', 'estatein' ) ) ); ?></h1>
+		<p><?php echo esc_html( estatein_field( 'page_intro', __( 'Welcome to Estatein Contact Us page. We are here to assist you with any inquiries, requests, or feedback you may have. Whether you are looking to buy or sell a property, explore investment opportunities, or simply want to connect, we are just a message away.', 'estatein' ) ) ); ?></p>
 	</div>
 </section>
 

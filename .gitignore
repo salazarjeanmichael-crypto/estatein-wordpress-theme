@@ -7,3 +7,8 @@ Thumbs.db
 
 # Build output (the theme ships source, there is no build step)
 node_modules/
+
+# A full mysqldump carries wp_users: real addresses and password hashes.
+# tools/export-db.php writes demo-content/estatein-demo.sql, which does not.
+*.sql
+!demo-content/estatein-demo.sql

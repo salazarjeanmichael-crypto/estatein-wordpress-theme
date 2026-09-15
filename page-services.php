@@ -88,8 +88,8 @@ $render_block = function ( array $cards, array $promo ) {
 
 <section class="page-hero">
 	<div class="container page-hero__inner">
-		<h1><?php esc_html_e( 'Elevate Your Real Estate Experience', 'estatein' ); ?></h1>
-		<p><?php esc_html_e( 'Welcome to Estatein, where your real estate aspirations meet expert guidance. Explore our comprehensive range of services, each designed to cater to your unique needs and dreams.', 'estatein' ); ?></p>
+		<h1><?php echo esc_html( estatein_field( 'page_heading', __( 'Elevate Your Real Estate Experience', 'estatein' ) ) ); ?></h1>
+		<p><?php echo esc_html( estatein_field( 'page_intro', __( 'Welcome to Estatein, where your real estate aspirations meet expert guidance. Explore our comprehensive range of services, each designed to cater to your unique needs and dreams.', 'estatein' ) ) ); ?></p>
 	</div>
 </section>
 

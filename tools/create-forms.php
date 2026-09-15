@@ -157,7 +157,49 @@ estatein_make_form(
 
 
 /* -------------------------------------------------------------------------
- * 3. Footer newsletter
+ * 3. Property inquiry - shown on a single listing
+ * ---------------------------------------------------------------------- */
+
+$inquiry = '
+<div class="form-grid">
+	<p class="form-field"><label>First Name [text* first_name placeholder "Enter First Name"]</label></p>
+	<p class="form-field"><label>Last Name [text last_name placeholder "Enter Last Name"]</label></p>
+	<p class="form-field"><label>Email [email* email placeholder "Enter your Email"]</label></p>
+	<p class="form-field"><label>Phone [tel phone placeholder "Enter Phone Number"]</label></p>
+	<p class="form-field form-field--full"><label>Selected Property [text selected_property readonly class:is-pinned]</label></p>
+	<p class="form-field form-field--full"><label>Message [textarea* message rows:5 placeholder "Enter your Message here.."]</label></p>
+</div>
+<div class="enquiry__foot">
+	<p class="form-consent">[acceptance consent] I agree with the Terms of Use and Privacy Policy [/acceptance]</p>
+	[submit class:btn class:btn--primary "Send Your Message"]
+</div>';
+
+estatein_make_form(
+	'Estatein Property Inquiry',
+	$inquiry,
+	array(
+		'subject'            => sprintf( '[%s] Inquiry: [selected_property]', $site ),
+		'sender'             => sprintf( '%s <%s>', $site, $admin_email ),
+		'recipient'          => $admin_email,
+		'body'               => "Property: [selected_property]
+
+Name: [first_name] [last_name]
+Email: [email]
+Phone: [phone]
+
+[message]
+",
+		'additional_headers' => 'Reply-To: [email]',
+		'attachments'        => '',
+		'use_html'           => 0,
+		'exclude_blank'      => 1,
+	),
+	'estatein_form_inquiry'
+);
+
+
+/* -------------------------------------------------------------------------
+ * 4. Footer newsletter
  * ---------------------------------------------------------------------- */
 
 $newsletter = '<div class="footer-subscribe">[email* estatein_subscribe_email placeholder "Enter Your Email"][submit class:footer-subscribe__send "Subscribe"]</div>';
