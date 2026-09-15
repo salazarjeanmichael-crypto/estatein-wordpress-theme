@@ -133,6 +133,19 @@ function estatein_html_class_script() {
 	(function (h) {
 		h.className += ' js';
 
+		// A banner dismissed earlier in this session has to be gone before the
+		// first paint. Leaving it to main.js means the bar is painted, then
+		// pulled, and the whole page lifts by its height once it is already on
+		// screen. The banner markup does not exist yet, so this goes on <html>
+		// and the stylesheet does the hiding.
+		try {
+			if (sessionStorage.getItem('estatein-dismissed') === '1') {
+				h.className += ' banner-dismissed';
+			}
+		} catch (err) {
+			// Private browsing can throw on storage access; ignore.
+		}
+
 		if (!('IntersectionObserver' in window) ||
 			(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
 			h.className += ' no-reveal';

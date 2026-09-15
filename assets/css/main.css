@@ -320,6 +320,12 @@ select {
 	display: none;
 }
 
+/* Set by the inline head script when this session has already dismissed the
+   bar, so it is absent from the first paint rather than removed after one. */
+html.banner-dismissed .banner {
+	display: none;
+}
+
 /* 7. Header and navigation ================================================= */
 
 .site-header {
@@ -1815,7 +1821,6 @@ select {
 
 /* 19. Property search and filters ========================================== */
 
-
 .results-count {
 	margin-bottom: 24px;
 	color: var(--c-muted);
@@ -2668,7 +2673,6 @@ select {
 	}
 }
 
-
 .team-grid {
 	display: grid;
 	grid-template-columns: 1fr;
@@ -2912,7 +2916,7 @@ html.js:not(.no-reveal)
 /* An animation, not a transition: most of these already use their transition
    property for hover, and a second declaration would clobber it. */
 html.js:not(.no-reveal) .is-visible:not([data-revealed]) {
-	animation: estatein-reveal 0.55s cubic-bezier(0.16, 0.84, 0.44, 1) var(--reveal-delay, 0ms) both;
+	animation: estatein-reveal 0.7s cubic-bezier(0.33, 1, 0.68, 1) var(--reveal-delay, 0ms) both;
 }
 
 /* Set once the animation ends, which drops both rules above so the element
@@ -2924,7 +2928,7 @@ html.js:not(.no-reveal) .is-visible:not([data-revealed]) {
 @keyframes estatein-reveal {
 	from {
 		opacity: 0;
-		transform: translateY(18px);
+		transform: translateY(14px);
 	}
 	to {
 		opacity: 1;
@@ -3234,7 +3238,9 @@ html.js:not(.no-reveal) .is-visible:not([data-revealed]) {
 	cursor: pointer;
 	overflow: hidden;
 	opacity: 0.75;
-	transition: opacity var(--ease), outline-color var(--ease);
+	transition:
+		opacity var(--ease),
+		outline-color var(--ease);
 	outline: 2px solid transparent;
 	outline-offset: 2px;
 }
