@@ -2,6 +2,8 @@
 
 A custom WordPress theme built from the [Estatein real estate Figma template](https://www.figma.com/community/file/1314076616839640516). No page builder, no starter theme, no framework — hand-written PHP, CSS and JavaScript.
 
+**[Browse the site →](https://salazarjeanmichael-crypto.github.io/estatein-wordpress-theme/)**  A static snapshot of the running install, so every page and both carousels can be clicked through without a PHP host. The enquiry forms and the property filters need the live WordPress site, since they post to it.
+
 ![Home page](.github/screenshots/home.jpg)
 
 ## Pages
